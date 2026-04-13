@@ -20,6 +20,17 @@
           }
         }
       ]
+    },
+    "rubric_based_tool_use_quality_v1": {
+      "threshold": 0.8,
+      "rubrics": [
+        {
+          "rubric_id": "sub_agent_routing_quality",
+          "rubric_content": {
+            "text_property": "The agent must delegate the query to the most appropriate specialized sub-agent based on the user's intent. Penalize if the agent attempts to answer a complex domain-specific query itself when a dedicated sub-agent is available, or if it routes to an irrelevant sub-agent."
+          }
+        }
+      ]
     }
   }
 }
