@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "project": "ADK Agent Evaluation",
+    "topic": "Topic 1: Methodology and Golden Datasets",
+    "version": "1.2"
+  },
+  "test_cases": [
+    {
+      "id": "TC001",
+      "description": "Extract transaction list from bank statement",
+      "input": {
+        "query": "List all transactions including date, description, and amount.",
+        "file_paths": ["data/sample_bank_statement.pdf"]
+      },
+      "expected_output": {
+        "transactions": [
+          {"date": "10/02", "description": "POS PURCHASE", "amount": -4.23},
+          {"date": "10/03", "description": "PREAUTHORIZED CREDIT PAYROLL 0987654678990", "amount": 763.01},
+          {"date": "10/04", "description": "POS PURCHASE", "amount": -11.68},
+          {"date": "10/05", "description": "CHECK 1234", "amount": -9.98},
+          {"date": "10/05", "description": "POS PURCHASE", "amount": -25.50},
+          {"date": "10/08", "description": "POS PURCHASE", "amount": -59.08},
+          {"date": "10/12", "description": "CHECK 1236", "amount": -69.00},
+          {"date": "10/14", "description": "CHECK 1237", "amount": -180.63},
+          {"date": "10/14", "description": "POS PURCHASE", "amount": -18.96},
+          {"date": "10/16", "description": "PREAUTHORIZED CREDIT US TREASURY SSA", "amount": 763.01},
+          {"date": "10/22", "description": "ATM WITHDRAWAL", "amount": -140.00},
+          {"date": "10/28", "description": "CHECK 1238", "amount": -91.06},
+          {"date": "10/30", "description": "CHECK 1239", "amount": -451.20},
+          {"date": "10/30", "description": "CHECK 1246", "amount": -37.07},
+          {"date": "10/30", "description": "POS PURCHASE", "amount": -18.67},
+          {"date": "10/31", "description": "CHECK 1247", "amount": -100.00},
+          {"date": "10/31", "description": "CHECK 1248", "amount": -78.24},
+          {"date": "10/31", "description": "PREAUTHORIZED CREDIT DEPOSIT TERMINAL", "amount": 350.00},
+          {"date": "11/02", "description": "CHECK 1249", "amount": -52.23},
+          {"date": "11/09", "description": "INTEREST CREDIT", "amount": 0.26},
+          {"date": "11/09", "description": "SERVICE CHARGE", "amount": -12.00}
+        ]
+      }
+    },
+    {
+      "id": "TC002",
+      "description": "Extract parties and interest rate from loan agreement",
+      "input": {
+        "query": "Identify the lender, borrower, and the specified interest rate.",
+        "file_paths": ["data/sample_loan_agreement.pdf"]
+      },
+      "expected_output": {
+        "lender": "UJJIVAN SMALL FINANCE BANK LTD.",
+        "borrower": "Details stated in Schedule (Template is blank)",
+        "interest_rate": "Fixed or Floating (linked to MCLR or External Benchmark Lending Rate plus Spread)"
+      }
+    },
+    {
+      "id": "TC003",
+      "description": "Extract net income from annual report",
+      "input": {
+        "query": "What was the net profit for the year 2024?",
+        "file_paths": ["data/sample_annual_report.pdf"]
+      },
+      "expected_output": {
+        "net_profit_2024": "CHF 31,287 thousand"
+      }
+    },
+    {
+      "id": "TC004",
+      "description": "Identify termination conditions in loan agreement",
+      "input": {
+        "query": "What are the events of default that can lead to termination?",
+        "file_paths": ["data/sample_loan_agreement.pdf"]
+      },
+      "expected_output": {
+        "events_of_default": [
+          "Non-payment of dues (EMI, PEMII, etc.) on due date",
+          "Performance of Covenants: failure to perform/observe any covenant/warranty",
+          "Supply of Misleading Information",
+          "Failure to furnish information/documents",
+          "Cross Default with other agreements",
+          "Insolvency/Liquidation proceedings",
+          "Security Interest being in jeopardy"
+        ]
+      }
+    },
+    {
+      "id": "TC005",
+      "description": "Extract total deposits from bank statement",
+      "input": {
+        "query": "Find the total amount of deposits and interest paid.",
+        "file_paths": ["data/sample_bank_statement.pdf"]
+      },
+      "expected_output": {
+        "total_deposits_and_credits": 1876.02,
+        "interest_paid": 0.26
+      }
+    },
+    {
+      "id": "TC006",
+      "description": "Extract risk factors from annual report",
+      "input": {
+        "query": "List the primary risk factors mentioned in the report.",
+        "file_paths": ["data/sample_annual_report.pdf"]
+      },
+      "expected_output": {
+        "risks": [
+          "Credit risk",
+          "Market risk (including interest rate and exchange rate risks)",
+          "Liquidity risk",
+          "Operational risk",
+          "Legal, reputational, and compliance risks"
+        ]
+      }
+    }
+  ]
+}

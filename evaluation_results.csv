@@ -1,0 +1,305 @@
+test_case_id,description,expected_output,actual_result,actual_routing,actual_tool_sequence,accuracy,schema_adherence,data_fidelity,routing_score,tool_sequence_score,overall_score
+TC001,Extract transaction list from bank statement,"{
+  ""transactions"": [
+    {
+      ""date"": ""10/02"",
+      ""description"": ""POS PURCHASE"",
+      ""amount"": -4.23
+    },
+    {
+      ""date"": ""10/03"",
+      ""description"": ""PREAUTHORIZED CREDIT PAYROLL 0987654678990"",
+      ""amount"": 763.01
+    },
+    {
+      ""date"": ""10/04"",
+      ""description"": ""POS PURCHASE"",
+      ""amount"": -11.68
+    },
+    {
+      ""date"": ""10/05"",
+      ""description"": ""CHECK 1234"",
+      ""amount"": -9.98
+    },
+    {
+      ""date"": ""10/05"",
+      ""description"": ""POS PURCHASE"",
+      ""amount"": -25.5
+    },
+    {
+      ""date"": ""10/08"",
+      ""description"": ""POS PURCHASE"",
+      ""amount"": -59.08
+    },
+    {
+      ""date"": ""10/12"",
+      ""description"": ""CHECK 1236"",
+      ""amount"": -69.0
+    },
+    {
+      ""date"": ""10/14"",
+      ""description"": ""CHECK 1237"",
+      ""amount"": -180.63
+    },
+    {
+      ""date"": ""10/14"",
+      ""description"": ""POS PURCHASE"",
+      ""amount"": -18.96
+    },
+    {
+      ""date"": ""10/16"",
+      ""description"": ""PREAUTHORIZED CREDIT US TREASURY SSA"",
+      ""amount"": 763.01
+    },
+    {
+      ""date"": ""10/22"",
+      ""description"": ""ATM WITHDRAWAL"",
+      ""amount"": -140.0
+    },
+    {
+      ""date"": ""10/28"",
+      ""description"": ""CHECK 1238"",
+      ""amount"": -91.06
+    },
+    {
+      ""date"": ""10/30"",
+      ""description"": ""CHECK 1239"",
+      ""amount"": -451.2
+    },
+    {
+      ""date"": ""10/30"",
+      ""description"": ""CHECK 1246"",
+      ""amount"": -37.07
+    },
+    {
+      ""date"": ""10/30"",
+      ""description"": ""POS PURCHASE"",
+      ""amount"": -18.67
+    },
+    {
+      ""date"": ""10/31"",
+      ""description"": ""CHECK 1247"",
+      ""amount"": -100.0
+    },
+    {
+      ""date"": ""10/31"",
+      ""description"": ""CHECK 1248"",
+      ""amount"": -78.24
+    },
+    {
+      ""date"": ""10/31"",
+      ""description"": ""PREAUTHORIZED CREDIT DEPOSIT TERMINAL"",
+      ""amount"": 350.0
+    },
+    {
+      ""date"": ""11/02"",
+      ""description"": ""CHECK 1249"",
+      ""amount"": -52.23
+    },
+    {
+      ""date"": ""11/09"",
+      ""description"": ""INTEREST CREDIT"",
+      ""amount"": 0.26
+    },
+    {
+      ""date"": ""11/09"",
+      ""description"": ""SERVICE CHARGE"",
+      ""amount"": -12.0
+    }
+  ]
+}","{
+  ""transactions"": [
+    {
+      ""date"": ""10/02"",
+      ""description"": ""POS PURCHASE TERMINAL 24349201 WAL-MART#3492 WICHITA KS 00-00-00 00:00 PM 0000000000000000"",
+      ""amount"": ""-4.23""
+    },
+    {
+      ""date"": ""10/03"",
+      ""description"": ""PREAUTHORIZED CREDIT PAYROLL 0987654 678990"",
+      ""amount"": ""763.01""
+    },
+    {
+      ""date"": ""10/04"",
+      ""description"": ""POS PURCHASE TERMINAL 443565 PLAYERS SPORTS BAR AND GRILL WICHITA KS 00-00-00 00:00 PM 0000000000000000"",
+      ""amount"": ""-11.68""
+    },
+    {
+      ""date"": ""10/05"",
+      ""description"": ""CHECK 1234"",
+      ""amount"": ""-9.98""
+    },
+    {
+      ""date"": ""10/05"",
+      ""description"": ""POS PURCHASE TERMINAL 422443 KWAN COURT WICHITA KS 00-00-00 00:00 PM 0000000000000000"",
+      ""amount"": ""-25.50""
+    },
+    {
+      ""date"": ""10/07"",
+      ""description"": ""POS PURCHASE TERMINAL 098765 THE HOME DEPOT 2204 WICHITA KS 00-00-00 00:00 AM 0000000000000000"",
+      ""amount"": ""-31.57""
+    },
+    {
+      ""date"": ""10/08"",
+      ""description"": ""POS PURCHASE"",
+      ""amount"": ""-59.08""
+    },
+    {
+      ""date"": ""10/12"",
+      ""description"": ""CHECK 1236"",
+      ""amount"": ""-69.00""
+    },
+    {
+      ""date"": ""10/14"",
+      ""description"": ""CHECK 1237"",
+      ""amount"": ""-180.63""
+    },
+    {
+      ""date"": ""10/14"",
+      ""description"": ""POS PURCHASE TERMINAL 098765 0000 000 WICHITA KS 00-00-00 00:00 PM 0000000000000000"",
+      ""amount"": ""-18.96""
+    },
+    {
+      ""date"": ""10/16"",
+      ""description"": ""PREAUTHORIZED CREDIT US TREASURY 310 SOC SEC 020802 509499853A SSA"",
+      ""amount"": ""763.01""
+    },
+    {
+      ""date"": ""10/22"",
+      ""description"": ""ATM WITHDRAWAL CASH WITHDRAWAL TERMINAL S78476 3216 EAST HARRY WICHITA KS 00-00-00 00:00 AM 0000000000000000"",
+      ""amount"": ""-140.00""
+    },
+    {
+      ""date"": ""10/28"",
+      ""description"": ""CHECK 1238"",
+      ""amount"": ""-91.06""
+    },
+    {
+      ""date"": ""10/30"",
+      ""description"": ""CHECK 1239"",
+      ""amount"": ""-451.20""
+    },
+    {
+      ""date"": ""10/30"",
+      ""description"": ""CHECK 1246"",
+      ""amount"": ""-37.07""
+    },
+    {
+      ""date"": ""10/30"",
+      ""description"": ""POS PURCHASE TERMINAL 098765 DILLONS 0000 000 WICHITA KS 00-00-00 00:00 PM 0000000000000000"",
+      ""amount"": ""-18.67""
+    },
+    {
+      ""date"": ""10/31"",
+      ""description"": ""CHECK 1247"",
+      ""amount"": ""-100.00""
+    },
+    {
+      ""date"": ""10/31"",
+      ""description"": ""CHECK 1248"",
+      ""amount"": ""-78.24""
+    },
+    {
+      ""date"": ""10/31"",
+      ""description"": ""PREAUTHORIZED CREDIT DEPOSIT TERMINAL S097094 09809 5:23 PM 097083740597380032"",
+      ""amount"": ""350.00""
+    },
+    {
+      ""date"": ""11/02"",
+      ""description"": ""CHECK 1249"",
+      ""amount"": ""-52.23""
+    },
+    {
+      ""date"": ""11/09"",
+      ""description"": ""INTEREST CREDIT"",
+      ""amount"": ""0.26""
+    },
+    {
+      ""date"": ""11/09"",
+      ""description"": ""SERVICE CHARGE"",
+      ""amount"": ""-12.00""
+    }
+  ]
+}",extraction_agent,,1.0,1.0,1.0,1.0,1.0,1.0
+TC002,Extract parties and interest rate from loan agreement,"{
+  ""lender"": ""UJJIVAN SMALL FINANCE BANK LTD."",
+  ""borrower"": ""Details stated in Schedule (Template is blank)"",
+  ""interest_rate"": ""Fixed or Floating (linked to MCLR or External Benchmark Lending Rate plus Spread)""
+}","{
+  ""lender"": ""UJJIVAN SMALL FINANCE BANK LTD."",
+  ""borrower"": ""As per the Schedule, which is not provided in this document."",
+  ""interest_rate"": ""Specified in the Schedule, which is not provided in this document.""
+}",extraction_agent,,0.3333333333333333,1.0,1.0,1.0,1.0,0.8666666666666666
+TC003,Extract net income from annual report,"{
+  ""net_profit_2024"": ""CHF 31,287 thousand""
+}","{
+  ""net_profit_2024"": ""31,287 CHF thousands""
+}",extraction_agent,,0.0,1.0,1.0,1.0,1.0,0.8
+TC004,Identify termination conditions in loan agreement,"{
+  ""events_of_default"": [
+    ""Non-payment of dues (EMI, PEMII, etc.) on due date"",
+    ""Performance of Covenants: failure to perform/observe any covenant/warranty"",
+    ""Supply of Misleading Information"",
+    ""Failure to furnish information/documents"",
+    ""Cross Default with other agreements"",
+    ""Insolvency/Liquidation proceedings"",
+    ""Security Interest being in jeopardy""
+  ]
+}","{
+  ""events_of_default"": [
+    ""Failure to make timely payment of EMI, PEMII, or any other amounts due."",
+    ""Failure to renew Post Dated Cheques (PDC) or Electronic Clearing System (ECS) mandates."",
+    ""Any payment made by the Borrower falls short of the required amount."",
+    ""Failure of the Borrower or any other Obligor to perform or observe any covenant, condition, or warranty."",
+    ""Non-satisfaction of any Conditions Precedent or other prescribed conditions."",
+    ""Submission of misleading or incorrect information by the Borrower or any other Obligor."",
+    ""Failure of the Borrower or any other Obligor to furnish required information or documents."",
+    ""Failure to inform the Bank of the happening of an Event of Default or an event that would become one."",
+    ""Failure to deliver PDC/ECS as per terms or when demanded by the Bank."",
+    ""Cross Default: Default in performance of any terms or conditions of any other agreement or arrangement with the Bank, its group companies, subsidiaries, affiliates, or any other bank/financial institution/lender."",
+    ""Initiation or threat of litigation, arbitration, or administrative proceedings against the Borrower."",
+    ""The Borrower makes any compromise with its creditors."",
+    ""A winding-up petition is filed against the Borrower and is not vacated, stayed, or abated within 30 days."",
+    ""Any orders or notices related to litigation, winding-up, liquidation, or insolvency are received by an Obligor."",
+    ""Default in the creation of Security Interest to the satisfaction of the Bank."",
+    ""If a secured asset is in jeopardy, under threat, or ceases to have effect."",
+    ""If any Security or Guarantee becomes unenforceable, infructuous, or is challenged by any person."",
+    ""If the Obligors do any act that may affect the Security or its value."",
+    ""Any act, omission, or circumstance that, in the Bank's sole opinion, prejudices or endangers the Bank's interest or any created Security Interest."",
+    ""For a company or one-person company: becoming subject to liquidation proceedings (voluntary or compulsory), or resolution for voluntary winding-up is passed, or a court order for winding-up is made, or suspending payments, or announcing intention to readjust/reschedule repayment obligations, provided that if compulsory, it's not vacated/stayed/abated within 30 days."",
+    ""For a company or one-person company: Borrower is unable to or has admitted in writing its inability to pay its debts."",
+    ""For a company or one-person company: Attachment or distraint levied on Securities not cured within 30 days."",
+    ""For a company or one-person company: Governmental authority depriving Borrower of substantial assets, or revoking/terminating authorizations, not vacated/stayed/abated within 30 days."",
+    ""For a company or one-person company: Change in the constitution, management, or existing ownership or control of share capital."",
+    ""For a partnership or LLP: Any change in constitution without Bank's approval."",
+    ""For a partnership or LLP: Dissolution of the Borrower, or a partner commits an act of insolvency, or an order is passed declaring insolvency."",
+    ""For a sole proprietorship or individual: Committing an act of insolvency or an order passed declaring insolvency."",
+    ""For a sole proprietorship or individual: Death of the Borrower/sole proprietor."",
+    ""For a sole proprietorship or individual: Divorce of the Borrower/sole proprietor and/or any other married Obligor."",
+    ""Any other events as specified in the Schedule or as the Bank may specify from time to time.""
+  ]
+}",extraction_agent,,1.0,1.0,1.0,1.0,1.0,1.0
+TC005,Extract total deposits from bank statement,"{
+  ""total_deposits_and_credits"": 1876.02,
+  ""interest_paid"": 0.26
+}","{
+  ""total_deposits"": ""1876.02"",
+  ""total_interest_paid"": ""0.26""
+}",extraction_agent,,0.0,1.0,1.0,1.0,1.0,0.8
+TC006,Extract risk factors from annual report,"{
+  ""risks"": [
+    ""Credit risk"",
+    ""Market risk (including interest rate and exchange rate risks)"",
+    ""Liquidity risk"",
+    ""Operational risk"",
+    ""Legal, reputational, and compliance risks""
+  ]
+}","{
+  ""primary_risk_factors"": [
+    ""Credit risk"",
+    ""Market risk"",
+    ""Liquidity risk"",
+    ""Operational risk"",
+    ""Legal, reputational, and compliance risks""
+  ]
+}",extraction_agent,,0.0,1.0,1.0,1.0,1.0,0.8

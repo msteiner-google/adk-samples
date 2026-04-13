@@ -1,0 +1,57 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.venv/
+
+# Notebooks stuff
+**/.ipynb_checkpoints/
+notebooks/*.html
+
+# ADK stuff
+**/.adk/
+
+# Terraform Core Files
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/crash.log
+terraform/crash.*.log
+terraform/*.tfvars
+terraform/*.tfvars.json
+terraform/*.auto.tfvars
+terraform/*.auto.tfvars.json
+terraform/override.tf
+terraform/override.tf.json
+terraform/*_override.tf
+terraform/*_override.tf.json
+terraform/*.tfplan
+terraform/.terraformrc
+terraform/terraform.rc
+
+# Sensitive Files (add any other specific sensitive file patterns)
+*.pem
+*.key
+*.pub
+credentials.txt
+secrets.txt
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+*.swp
+*~
+
+
+
