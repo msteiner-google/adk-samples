@@ -8,9 +8,9 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 .
 ├── Makefile                # Entry point for common commands (eval, convert, check)
 ├── data/
-│   └── golden_dataset_template.json  # Source dataset with local file paths
+│   └── golden_dataset_template.json  # Source dataset in ADK format (using local file paths)
 ├── scripts/
-│   └── convert_dataset.py  # Utility to convert template dataset to ADK format
+│   └── convert_dataset.py  # Utility to embed local files as base64 and stringify JSON
 ├── src/
 │   └── agents/
 │       └── simple_agent/
@@ -19,7 +19,7 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 ├── tests/
 │   └── eval/
 │       ├── eval_config.json # Evaluation criteria and thresholds
-│       └── evalsets/        # Generated ADK-compatible evalsets
+│       └── evalsets/        # Generated ADK-compatible evalsets (with embedded binaries)
 └── pyproject.toml          # Project dependencies and configuration
 ```
 
@@ -35,7 +35,30 @@ To run the evaluation suite:
 make eval
 ```
 
-**Note on Multimodal Data:** The ADK CLI requires multimodal content (PDFs) to be base64-encoded within the `evalset.json`. To keep the repository clean, we store local file paths in `data/golden_dataset_template.json`. The `make eval` command automatically runs a conversion script (`scripts/convert_dataset.py`) to generate the heavy ADK-compatible `golden_evalset.json` before execution.
+**Note on Template Format:** To ensure transparency and ease of maintenance, the source dataset in `data/golden_dataset_template.json` follows the standard **ADK EvalSet schema**. 
+
+The `make eval` command automatically runs `scripts/convert_dataset.py`, which performs two key tasks:
+1. **Binary Embedding**: Replaces `{"file_path": "path/to/file"}` with base64-encoded `inline_data`.
+2. **JSON Stringification**: Automatically converts structured JSON objects in `text` fields into strings, allowing the template to remain readable while meeting ADK's strict string requirement for model responses.
+
+### Reproducibility vs. Production
+
+To maximize **reproducibility** in this environment, we use local PDF files stored in `data/` and embed them into the evalsets as base64 strings during the conversion process.
+
+In a **production setting**, it is recommended to host multimodal assets on **Google Cloud Storage (GCS)**. This avoids heavy JSON files and leverages Vertex AI's ability to read directly from GCS URIs.
+
+To use GCS in your `golden_dataset_template.json`, you would replace the `file_path` entries with `file_uri`:
+
+```json
+{
+  "user_content": {
+    "parts": [
+      { "text": "Extract data from this file" },
+      { "file_uri": "gs://your-bucket-name/bank-statements/statement_01.pdf", "mime_type": "application/pdf" }
+    ]
+  }
+}
+```
 
 ### Metrics Used
 
@@ -45,9 +68,26 @@ make eval
 
 ### Adding New Test Cases
 
-1. Add your test case to the source dataset in `data/golden_dataset_template.json`.
-2. Convert the dataset to ADK format:
-   ```bash
-   make convert
-   ```
-3. Run the evaluation again with `make eval`.
+Add your test case to `data/golden_dataset_template.json` using the standard ADK format:
+
+```json
+{
+  "eval_id": "new_test_case",
+  "conversation": [
+    {
+      "user_content": {
+        "parts": [
+          { "text": "Extract data from this file" },
+          { "file_path": "data/your_document.pdf" }
+        ]
+      },
+      "final_response": {
+        "role": "model",
+        "parts": [
+          { "text": { "expected": "json_output" } }
+        ]
+      }
+    }
+  ]
+}
+```
