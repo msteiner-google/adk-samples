@@ -3,6 +3,7 @@
 import base64
 import json
 import mimetypes
+import os
 import pathlib
 from typing import Any
 
@@ -57,6 +58,17 @@ def convert_to_adk_format(input_path: str, output_path: str) -> None:
     with output_file.open("w", encoding="utf-8") as f:
         json.dump(processed_data, f, indent=2)
     print(f"Successfully generated: {output_path}")  # noqa: T201
+
+    # Create a symlink in the agent's directory for ADK optimization
+    adk_evalset_path = (
+        project_root / "src" / "agents" / "simple_agent" / "golden_evalset.evalset.json"
+    )
+    adk_evalset_path.parent.mkdir(parents=True, exist_ok=True)
+    if adk_evalset_path.exists() or adk_evalset_path.is_symlink():
+        adk_evalset_path.unlink()
+
+    adk_evalset_path.symlink_to(os.path.relpath(output_file, adk_evalset_path.parent))
+    print(f"Created symlink: {adk_evalset_path}")  # noqa: T201
 
 
 if __name__ == "__main__":

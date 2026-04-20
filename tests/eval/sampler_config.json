@@ -1,0 +1,30 @@
+{
+  "app_name": "simple_agent",
+  "eval_config": {
+    "criteria": {
+      "final_response_match_v2": {
+        "threshold": 0.8,
+        "judge_model_options": {
+          "judge_model": "gemini-2.5-flash"
+        }
+      },
+      "tool_trajectory_avg_score": {
+        "threshold": 1.0,
+        "match_type": "ANY_ORDER"
+      },
+      "rubric_based_final_response_quality_v1": {
+        "threshold": 0.8,
+        "rubrics": [
+          {
+            "rubric_id": "schema_fidelity",
+            "rubric_content": {
+              "text_property": "The response must follow the requested JSON schema strictly, containing all required fields with accurate data. Penalize if any fields are missing or if values are null/empty where they shouldn't be."
+            }
+          }
+        ]
+      }
+    }
+  },
+  "train_eval_set": "golden_evalset",
+  "validation_eval_set": "golden_evalset"
+}

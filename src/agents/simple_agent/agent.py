@@ -2,8 +2,13 @@
 
 from google.adk.agents.llm_agent import LlmAgent
 
+from src.agents.simple_agent._patch import apply_patch
 from src.agents.structured_data_model.generic_definition import StructuredResponse
 from src.utils.model import get_geofenced_gemini_model
+
+# Apply monkeypatch for ADK LocalEvalSampler
+apply_patch()
+
 
 root_agent = LlmAgent(
     name="simple_bank_agent",

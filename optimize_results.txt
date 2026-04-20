@@ -1,0 +1,4 @@
+uv run python scripts/convert_dataset.py
+Successfully generated: /usr/local/google/home/msteiner/Projects/bper/tests/eval/evalsets/golden_evalset.json
+Created symlink: /usr/local/google/home/msteiner/Projects/bper/src/agents/simple_agent/golden_evalset.evalset.json
+adk optimize src/agents/simple_agent --sampler_config_file_path tests/eval/sampler_config.json --optimizer_config_file_path tests/eval/optimizer_config.json --print_detailed_results

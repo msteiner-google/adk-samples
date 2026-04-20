@@ -56,3 +56,4 @@ Thumbs.db
 
 
 tests/eval/evalsets/golden_evalset.json
+src/agents/simple_agent/*.evalset.json
