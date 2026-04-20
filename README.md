@@ -18,12 +18,6 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 │   │       ├── _patch.py    # Monkeypatch for ADK LocalEvalSampler crash
 │   │       ├── agent.py     # Root agent definition and logic
 │   │       └── wrapper.py   # Wrapper for optimization support
-│   ├── optimization/       # Custom GEPA optimization implementation
-│   │   ├── base.py         # Shared data types (PromptVariant, OptimizationConfig)
-│   │   ├── gepa.py         # Genetic engine (Crossover and Tournament Selection)
-│   │   ├── optimizer.py    # Main CustomGEPAOptimizer implementation
-│   │   ├── reflection.py   # Reflection loop (LLM-based Diagnosis and Mutation)
-│   │   └── selection.py    # Pareto-frontier selection for multi-objective optimization
 │   └── utils/
 │       └── model.py        # Model utilities and geofenced Gemini factory
 ├── tests/
@@ -47,22 +41,23 @@ To run the evaluation suite:
 make eval
 ```
 
-**Note on Template Format:** To ensure transparency and ease of maintenance, the source dataset in `data/golden_dataset_template.json` follows the standard **ADK EvalSet schema**. 
+**Note on Template Format:** To ensure transparency and ease of maintenance, the source dataset in `data/golden_dataset_template.json` follows the standard **ADK EvalSet schema**.
 
 The `make eval` command automatically runs `scripts/convert_dataset.py`, which performs binary embedding and JSON stringification for the `text` fields.
 
 ## Prompt Optimization (GEPA)
 
-The project features a custom implementation of **GEPA (Genetic Evolutionary Prompt Algorithms)**, which automates the refinement of the agent's system instruction based on empirical performance.
+The project leverages the official **GEPA (Genetic Evolutionary Prompt Algorithms)** optimizer provided by the ADK library (`GEPARootAgentPromptOptimizer`), which automates the refinement of the agent's system instruction based on empirical performance.
 
 ### How it Works
 
 The optimization loop follows these phases in each iteration:
+
 1.  **Sampling**: The current population of prompt variants is evaluated against the training set.
 2.  **Reflection**: An LLM "Reflector" analyzes execution trajectories of failed cases to diagnose systemic issues.
 3.  **Mutation**: The Reflector proposes new instruction variants that specifically address the identified failures.
 4.  **Crossover**: Genetic operators combine successful parts of different prompt variants to create new candidates.
-5.  **Selection**: A **Pareto Selector** identifies the "non-dominated" set of variants based on multiple objectives (e.g., accuracy, cost, or latency), keeping the population size stable.
+5.  **Selection**: Identifying the "non-dominated" set of variants based on performance metrics, keeping the population size stable.
 
 ### Running Optimization
 
@@ -72,7 +67,9 @@ To start the optimization process:
 make optimize
 ```
 
-This will run the GEPA loop as configured in `tests/eval/optimizer_config.json`, sampling examples according to `tests/eval/sampler_config.json`, and will output the refined agents to the `optimize_results.txt` file.
+This will run the GEPA loop using the built-in ADK optimizer as configured in `tests/eval/optimizer_config.json`,
+sampling examples according to `tests/eval/sampler_config.json`. The results will be displayed in the terminal
+and saved according to the ADK's default behavior.
 
 ### Metrics Used
 
@@ -93,7 +90,10 @@ To use GCS in your `golden_dataset_template.json`, you would replace the `file_p
   "user_content": {
     "parts": [
       { "text": "Extract data from this file" },
-      { "file_uri": "gs://your-bucket-name/bank-statements/statement_01.pdf", "mime_type": "application/pdf" }
+      {
+        "file_uri": "gs://your-bucket-name/bank-statements/statement_01.pdf",
+        "mime_type": "application/pdf"
+      }
     ]
   }
 }
@@ -116,9 +116,7 @@ Add your test case to `data/golden_dataset_template.json` using the standard ADK
       },
       "final_response": {
         "role": "model",
-        "parts": [
-          { "text": { "expected": "json_output" } }
-        ]
+        "parts": [{ "text": { "expected": "json_output" } }]
       }
     }
   ]

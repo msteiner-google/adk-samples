@@ -1,4 +1,5 @@
 {
+  "optimizer_class": "google.adk.optimization.gepa_root_agent_prompt_optimizer.GEPARootAgentPromptOptimizer",
   "optimizer_model": "gemini-2.5-flash",
   "max_metric_calls": 50,
   "reflection_minibatch_size": 3
