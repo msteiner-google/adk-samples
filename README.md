@@ -16,14 +16,14 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 │   │   ├── layout_aware_agent/ # Agent optimized for complex document layouts
 │   │   │   ├── __init__.py
 │   │   │   ├── agent.py
-│   │   │   └── wrapper.py
+│   │   │   ├── analyst/        # Specialized sub-agent for layout analysis
+│   │   │   └── extractor/      # Specialized sub-agent for data extraction
 │   │   └── simple_agent/       # Baseline agent for standard documents
 │   │       ├── __init__.py
-│   │       ├── _patch.py
-│   │       ├── agent.py
-│   │       └── wrapper.py
+│   │       └── agent.py
 │   └── utils/
-│       └── model.py        # Model utilities and geofenced Gemini factory
+│       ├── model.py        # Model utilities and geofenced Gemini factory
+│       └── patch.py        # ADK optimization stability patches
 ├── tests/
 │   └── eval/
 │       ├── eval_config.json      # Evaluation criteria and thresholds
