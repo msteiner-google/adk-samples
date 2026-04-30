@@ -13,11 +13,15 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 │   └── convert_dataset.py  # Utility to embed local files as base64 and stringify JSON
 ├── src/
 │   ├── agents/
-│   │   └── simple_agent/
-│   │       ├── __init__.py # Module initialization
-│   │       ├── _patch.py    # Monkeypatch for ADK LocalEvalSampler crash
-│   │       ├── agent.py     # Root agent definition and logic
-│   │       └── wrapper.py   # Wrapper for optimization support
+│   │   ├── layout_aware_agent/ # Agent optimized for complex document layouts
+│   │   │   ├── __init__.py
+│   │   │   ├── agent.py
+│   │   │   └── wrapper.py
+│   │   └── simple_agent/       # Baseline agent for standard documents
+│   │       ├── __init__.py
+│   │       ├── _patch.py
+│   │       ├── agent.py
+│   │       └── wrapper.py
 │   └── utils/
 │       └── model.py        # Model utilities and geofenced Gemini factory
 ├── tests/
@@ -35,10 +39,18 @@ The project uses the official **ADK Evaluation Framework** to measure agent perf
 
 ### Running Evaluations
 
-To run the evaluation suite:
+To run the evaluation suite for all agents:
 
 ```bash
 make eval
+```
+
+To evaluate a specific agent:
+
+```bash
+make eval-simple
+# or
+make eval-layout
 ```
 
 **Note on Template Format:** To ensure transparency and ease of maintenance, the source dataset in `data/golden_dataset_template.json` follows the standard **ADK EvalSet schema**.
@@ -61,15 +73,22 @@ The optimization loop follows these phases in each iteration:
 
 ### Running Optimization
 
-To start the optimization process:
+To start the optimization process for all agents:
 
 ```bash
 make optimize
 ```
 
+To optimize a specific agent:
+
+```bash
+make optimize-simple
+# or
+make optimize-layout
+```
+
 This will run the GEPA loop using the built-in ADK optimizer as configured in `tests/eval/optimizer_config.json`,
-sampling examples according to `tests/eval/sampler_config.json`. The results will be displayed in the terminal
-and saved according to the ADK's default behavior.
+sampling examples according to the respective sampler configuration file (`sampler_config.json` or `layout_aware_agent_sampler_config.json`). The results will be displayed in the terminal and saved according to the ADK's default behavior.
 
 ### Metrics Used
 
