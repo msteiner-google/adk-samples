@@ -1,0 +1,16 @@
+from google.adk.agents.agent import Agent
+from src.agents.layout_analyst.agent import layout_analyst_agent
+from src.agents.complex_extractor.agent import complex_extractor_agent
+from src.utils.model import get_geofenced_gemini_model
+
+orchestrator_agent = Agent(
+    name="topic_3_orchestrator",
+    instruction=(
+        "You are the orchestrator for complex document extraction. "
+        "1. Delegate to layout_analyst to understand the document structure. "
+        "2. Pass the resulting Layout Map and the document to complex_extractor to get the data. "
+        "3. Ensure the final response is a structured extraction."
+    ),
+    model=get_geofenced_gemini_model(),
+    agents=[layout_analyst_agent, complex_extractor_agent]
+)
