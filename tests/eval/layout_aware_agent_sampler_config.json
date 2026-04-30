@@ -1,5 +1,5 @@
 {
-  "app_name": "topic_3_orchestrator",
+  "app_name": "layout_aware_agent",
   "eval_config": {
     "criteria": {
       "final_response_match_v2": {
