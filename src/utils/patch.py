@@ -1,14 +1,17 @@
 """Monkeypatch for ADK LocalEvalSampler crash."""
 
+import logging
 from typing import Any
 
 try:
     from google.adk.optimization import local_eval_sampler
-except ImportError, AttributeError:
+except (ImportError, AttributeError):
     local_eval_sampler = None
 
+logger = logging.getLogger(__name__)
 
-def apply_patch() -> None:
+
+def apply_adk_patch() -> None:
     """Fixes a TypeError in google.adk.optimization.local_eval_sampler.
 
     Specifically, it patches _extract_eval_data to ensure metric_result.score
@@ -39,5 +42,6 @@ def apply_patch() -> None:
         local_eval_sampler.LocalEvalSampler._extract_eval_data = (  # noqa: SLF001
             patched_extract_eval_data
         )
-    except ImportError, AttributeError:
-        pass
+        logger.info("Successfully applied ADK LocalEvalSampler patch")
+    except (ImportError, AttributeError) as e:
+        logger.warning("Failed to apply ADK LocalEvalSampler patch: %s", e)

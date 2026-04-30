@@ -3,9 +3,13 @@
 from google.adk.agents.llm_agent import Agent
 
 from src.utils.model import get_geofenced_gemini_model
+from src.utils.patch import apply_adk_patch
 
 from .analyst.agent import layout_analyst_agent
 from .extractor.agent import complex_extractor_agent
+
+# Apply monkeypatch for ADK LocalEvalSampler
+apply_adk_patch()
 
 orchestrator_agent = Agent(
     name="layout_aware_orchestrator",

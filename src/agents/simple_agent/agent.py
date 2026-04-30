@@ -2,12 +2,12 @@
 
 from google.adk.agents.llm_agent import LlmAgent
 
-from src.agents.simple_agent._patch import apply_patch
 from src.utils.data_model import StructuredResponse
 from src.utils.model import get_geofenced_gemini_model
+from src.utils.patch import apply_adk_patch
 
 # Apply monkeypatch for ADK LocalEvalSampler
-apply_patch()
+apply_adk_patch()
 
 
 root_agent = LlmAgent(
