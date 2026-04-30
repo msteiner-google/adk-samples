@@ -1,0 +1,14 @@
+{
+  "modelConfigs": {
+    "customAliases": {
+      "gemini-fast": {
+        "extends": "gemini-3-flash-preview",
+        "modelConfig": {
+          "generateContentConfig": {
+            "thinkingConfig": { "thinkingLevel": "MEDIUM" }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,7 @@
+"""Module for document layout analysis."""
+
 from google.adk.agents.llm_agent import LlmAgent
+
 from src.agents.structured_data_model.layout_map import LayoutMap
 from src.utils.model import get_geofenced_gemini_model
 
@@ -11,5 +14,5 @@ layout_analyst_agent = LlmAgent(
     ),
     model=get_geofenced_gemini_model(),
     output_schema=LayoutMap,
-    output_key="layout_map"
+    output_key="layout_map",
 )

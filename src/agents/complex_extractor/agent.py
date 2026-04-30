@@ -1,4 +1,7 @@
+"""Module for complex document extraction."""
+
 from google.adk.agents.llm_agent import LlmAgent
+
 from src.agents.structured_data_model.generic_definition import StructuredResponse
 from src.utils.model import get_geofenced_gemini_model
 
@@ -12,5 +15,5 @@ complex_extractor_agent = LlmAgent(
     ),
     model=get_geofenced_gemini_model(),
     output_schema=StructuredResponse,
-    output_key="structured_extraction"
+    output_key="structured_extraction",
 )
