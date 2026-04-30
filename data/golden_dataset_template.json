@@ -25,7 +25,193 @@
                 "text": {
                   "answer": [
                     { "key": "10/02 POS PURCHASE", "value": -4.23, "context": "Bank Statement" },
-                    { "key": "10/03 PREAUTHORIZED CREDIT PAYROLL", "value": 763.01, "context": "Bank Statement" }
+                    { "key": "10/03 PREAUTHORIZED CREDIT PAYROLL 0987654678990", "value": 763.01, "context": "Bank Statement" },
+                    { "key": "10/04 POS PURCHASE", "value": -11.68, "context": "Bank Statement" },
+                    { "key": "10/05 CHECK 1234", "value": -9.98, "context": "Bank Statement" },
+                    { "key": "10/05 POS PURCHASE", "value": -25.5, "context": "Bank Statement" },
+                    { "key": "10/08 POS PURCHASE", "value": -59.08, "context": "Bank Statement" },
+                    { "key": "10/12 CHECK 1236", "value": -69.0, "context": "Bank Statement" },
+                    { "key": "10/14 CHECK 1237", "value": -180.63, "context": "Bank Statement" },
+                    { "key": "10/14 POS PURCHASE", "value": -18.96, "context": "Bank Statement" },
+                    { "key": "10/16 PREAUTHORIZED CREDIT US TREASURY SSA", "value": 763.01, "context": "Bank Statement" },
+                    { "key": "10/22 ATM WITHDRAWAL", "value": -140.0, "context": "Bank Statement" },
+                    { "key": "10/28 CHECK 1238", "value": -91.06, "context": "Bank Statement" },
+                    { "key": "10/30 CHECK 1239", "value": -451.2, "context": "Bank Statement" },
+                    { "key": "10/30 CHECK 1246", "value": -37.07, "context": "Bank Statement" },
+                    { "key": "10/30 POS PURCHASE", "value": -18.67, "context": "Bank Statement" },
+                    { "key": "10/31 CHECK 1247", "value": -100.0, "context": "Bank Statement" },
+                    { "key": "10/31 CHECK 1248", "value": -78.24, "context": "Bank Statement" },
+                    { "key": "10/31 PREAUTHORIZED CREDIT DEPOSIT TERMINAL", "value": 350.0, "context": "Bank Statement" },
+                    { "key": "11/02 CHECK 1249", "value": -52.23, "context": "Bank Statement" },
+                    { "key": "11/09 INTEREST CREDIT", "value": 0.26, "context": "Bank Statement" },
+                    { "key": "11/09 SERVICE CHARGE", "value": -12.0, "context": "Bank Statement" }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "TC002",
+      "conversation": [
+        {
+          "invocation_id": "inv_1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Identify the lender, borrower, and the specified interest rate."
+              },
+              {
+                "file_path": "data/sample_loan_agreement.pdf"
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": {
+                  "answer": [
+                    { "key": "lender", "value": "UJJIVAN SMALL FINANCE BANK LTD.", "context": "Loan Agreement Header" },
+                    { "key": "borrower", "value": "Details stated in Schedule (Template is blank)", "context": "Loan Agreement Schedule" },
+                    { "key": "interest_rate", "value": "Fixed or Floating (linked to MCLR or External Benchmark Lending Rate plus Spread)", "context": "Interest Section" }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "TC003",
+      "conversation": [
+        {
+          "invocation_id": "inv_1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "What was the net profit for the year 2024?"
+              },
+              {
+                "file_path": "data/sample_annual_report.pdf"
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": {
+                  "answer": [
+                    { "key": "net_profit_2024", "value": "CHF 31,287 thousand", "context": "Financial Highlights" }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "TC004",
+      "conversation": [
+        {
+          "invocation_id": "inv_1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "What are the events of default that can lead to termination?"
+              },
+              {
+                "file_path": "data/sample_loan_agreement.pdf"
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": {
+                  "answer": [
+                    { "key": "events_of_default", "value": [
+                      "Non-payment of dues (EMI, PEMII, etc.) on due date",
+                      "Performance of Covenants: failure to perform/observe any covenant/warranty",
+                      "Supply of Misleading Information",
+                      "Failure to furnish information/documents",
+                      "Cross Default with other agreements",
+                      "Insolvency/Liquidation proceedings",
+                      "Security Interest being in jeopardy"
+                    ], "context": "Events of Default section" }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "TC005",
+      "conversation": [
+        {
+          "invocation_id": "inv_1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Find the total amount of deposits and interest paid."
+              },
+              {
+                "file_path": "data/sample_bank_statement.pdf"
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": {
+                  "answer": [
+                    { "key": "total_deposits_and_credits", "value": 1876.02, "context": "Account Summary" },
+                    { "key": "interest_paid", "value": 0.26, "context": "Account Summary" }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "TC006",
+      "conversation": [
+        {
+          "invocation_id": "inv_1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "List the primary risk factors mentioned in the report."
+              },
+              {
+                "file_path": "data/sample_annual_report.pdf"
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": {
+                  "answer": [
+                    { "key": "risks", "value": [
+                      "Credit risk",
+                      "Market risk (including interest rate and exchange rate risks)",
+                      "Liquidity risk",
+                      "Operational risk",
+                      "Legal, reputational, and compliance risks"
+                    ], "context": "Risk Management section" }
                   ]
                 }
               }
