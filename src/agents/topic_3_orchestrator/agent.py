@@ -1,4 +1,4 @@
-from google.adk.agents.agent import Agent
+from google.adk.agents.llm_agent import Agent
 from src.agents.layout_analyst.agent import layout_analyst_agent
 from src.agents.complex_extractor.agent import complex_extractor_agent
 from src.utils.model import get_geofenced_gemini_model
@@ -12,5 +12,7 @@ orchestrator_agent = Agent(
         "3. Ensure the final response is a structured extraction."
     ),
     model=get_geofenced_gemini_model(),
-    agents=[layout_analyst_agent, complex_extractor_agent]
+    sub_agents=[layout_analyst_agent, complex_extractor_agent]
 )
+
+root_agent = orchestrator_agent

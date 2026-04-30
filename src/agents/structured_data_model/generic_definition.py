@@ -2,6 +2,7 @@ from typing import Any, List
 from pydantic import BaseModel, Field
 
 class ExtractionItem(BaseModel):
+    """A financial metric or field extracted from a document."""
     key: str = Field(description="The financial metric or field name")
     value: Any = Field(description="The extracted value")
     context: str = Field(description="Context or footnote reference for this value")

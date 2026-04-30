@@ -18,6 +18,12 @@
           "rubric_content": {
             "text_property": "The response must follow the requested JSON schema strictly, containing all required fields with accurate data. Penalize if any fields are missing or if values are null/empty where they shouldn't be."
           }
+        },
+        {
+          "rubric_id": "layout_fidelity",
+          "rubric_content": {
+            "text_property": "The agent must demonstrate accurate understanding of the document layout, especially for complex or nested tables. Penalize if the agent misinterprets the relationship between headers and data, or if it misses structural components identified in the layout analysis phase."
+          }
         }
       ]
     },
