@@ -17,6 +17,12 @@ dev = [
   "uv-build>=0.12.18",
 ]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# The plugin callbacks under test are async; auto mode saves marking each one.
+asyncio_mode = "auto"
+filterwarnings = ["ignore::DeprecationWarning"]
+
 [tool.ty.src]
 include = ["src"]
 exclude = ["tests/"]
