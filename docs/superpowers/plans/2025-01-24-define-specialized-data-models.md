@@ -1,5 +1,14 @@
 # Define Specialized Data Models Implementation Plan
 
+> **Status: COMPLETE.** Both models shipped, but at a different path than this
+> plan specifies. `LayoutMap`, `LayoutComponent`, `ExtractionItem` and
+> `StructuredResponse` all live in **`src/utils/data_model.py`**, not
+> `src/agents/structured_data_model/`, because they are shared by
+> `simple_agent`, `layout_aware_agent/analyst` and `layout_aware_agent/extractor`
+> rather than owned by a single agent. Tests are in
+> `tests/utils/test_data_model.py`. The paths in the tasks below are kept as
+> originally written for the record; read them as superseded.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Define Pydantic models for "Layout Maps" and "Complex Extractions" to support structured data extraction from complex documents like 10-Ks.
@@ -16,7 +25,7 @@
 - Create: `src/agents/structured_data_model/layout_map.py`
 - Test: `tests/agents/structured_data_model/test_layout_map.py`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```python
 from src.agents.structured_data_model.layout_map import LayoutMap, LayoutComponent
@@ -32,12 +41,12 @@ def test_layout_map_validation():
     assert layout.nested_table_count == 1
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `uv run pytest tests/agents/structured_data_model/test_layout_map.py`
 Expected: FAIL with `ModuleNotFoundError: No module named 'src.agents.structured_data_model.layout_map'`
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 ```python
 from pydantic import BaseModel, Field
@@ -53,12 +62,12 @@ class LayoutMap(BaseModel):
     nested_table_count: int = Field(description="Number of complex or nested tables found")
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `uv run pytest tests/agents/structured_data_model/test_layout_map.py`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/agents/structured_data_model/layout_map.py tests/agents/structured_data_model/test_layout_map.py
@@ -73,7 +82,7 @@ git commit -m "feat(topic-3): define layout map schema"
 - Modify: `src/agents/structured_data_model/generic_definition.py`
 - Test: `tests/agents/structured_data_model/test_generic_definition.py`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```python
 from src.agents.structured_data_model.generic_definition import StructuredResponse, ExtractionItem
@@ -89,12 +98,12 @@ def test_generic_extraction_with_context():
     assert response.answer[0].context == "As of Dec 31, 2024, per Item 8"
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `uv run pytest tests/agents/structured_data_model/test_generic_definition.py`
 Expected: FAIL (either `context` missing or `answer` structure different)
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 ```python
 from typing import Any, List
@@ -112,12 +121,12 @@ class StructuredResponse(BaseModel):
     )
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `uv run pytest tests/agents/structured_data_model/test_generic_definition.py`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/agents/structured_data_model/generic_definition.py tests/agents/structured_data_model/test_generic_definition.py

@@ -22,14 +22,17 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 │   │       ├── __init__.py
 │   │       └── agent.py
 │   └── utils/
+│       ├── data_model.py   # Pydantic schemas: StructuredResponse and LayoutMap
 │       ├── model.py        # Model utilities and geofenced Gemini factory
 │       └── patch.py        # ADK optimization stability patches
 ├── tests/
-│   └── eval/
-│       ├── eval_config.json      # Evaluation criteria and thresholds
-│       ├── optimizer_config.json # Configuration for the optimization process
-│       ├── sampler_config.json   # Sampler configuration for training/validation
-│       └── evalsets/             # Generated ADK-compatible evalsets
+│   ├── eval/
+│   │   ├── eval_config.json      # Evaluation criteria and thresholds
+│   │   ├── optimizer_config.json # Configuration for the optimization process
+│   │   ├── sampler_config.json   # Sampler config for simple_agent
+│   │   ├── layout_aware_agent_sampler_config.json # Sampler config for layout_aware_agent
+│   │   └── evalsets/             # Generated ADK-compatible evalsets
+│   └── utils/                    # Unit tests for the shared utilities
 └── pyproject.toml          # Project dependencies and configuration
 ```
 
