@@ -26,6 +26,7 @@ DOCS = PROJECT_ROOT / "docs"
 COVERAGE_MAP = DOCS / "topic-coverage.md"
 TOPICS = DOCS / "topics.md"
 PATTERNS = DOCS / "patterns" / "nl2sql.md"
+EXAMPLES = DOCS / "topic-examples.md"
 
 #: Backtick-quoted spans that look like a repo path: they contain a slash and
 #: start with a known top-level directory, or they end in a source extension.
@@ -51,7 +52,7 @@ def documented_paths(document: pathlib.Path) -> set[str]:
     return found
 
 
-@pytest.mark.parametrize("document", [COVERAGE_MAP, TOPICS, PATTERNS])
+@pytest.mark.parametrize("document", [COVERAGE_MAP, TOPICS, PATTERNS, EXAMPLES])
 def test_documented_paths_exist(document: pathlib.Path):
     """Every path a doc points at must resolve."""
     missing = sorted(
@@ -102,7 +103,7 @@ def test_every_make_target_in_the_docs_exists():
     defined = set(re.findall(r"^([a-z0-9][a-z0-9-]*):", makefile, re.M))
 
     documented = set()
-    for document in (COVERAGE_MAP, PROJECT_ROOT / "README.md", PATTERNS):
+    for document in (COVERAGE_MAP, PROJECT_ROOT / "README.md", PATTERNS, EXAMPLES):
         text = document.read_text(encoding="utf-8")
         documented.update(re.findall(r"`make ([a-z0-9-]+)", text))
         documented.update(re.findall(r"^\s*make ([a-z0-9-]+)", text, re.M))
