@@ -2,6 +2,13 @@
 
 This project implements an AI agent using the Google ADK (Agent Development Kit) to extract structured data from bank documents, and includes a custom **GEPA (Genetic Evolutionary Prompt Algorithms)** optimization loop to refine system instructions.
 
+## What This Project Covers
+
+Every development topic and final deliverable is mapped to the code that
+implements it in **[docs/topic-coverage.md](docs/topic-coverage.md)**, with an
+honest account of what has been verified by a live run and what has only been
+unit tested. Start there.
+
 ## Repository Structure
 
 ```
