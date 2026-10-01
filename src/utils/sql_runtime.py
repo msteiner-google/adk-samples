@@ -30,9 +30,15 @@ DEFAULT_SCHEMA_PATH = (
 #: Queries are capped so a runaway cross join cannot hang an eval run.
 MAX_ROWS = 200
 
+#: A text column with at most this many distinct values is treated as an
+#: enumeration whose spellings are worth suggesting back to the model.
+MAX_ENUM_VALUES = 12
+
 #: Only read queries are allowed. The agent answers questions; it has no
 #: reason to mutate, and an eval run must not depend on execution order.
 _READ_ONLY_PREFIX = re.compile(r"^\s*(?:WITH|SELECT)\b", re.IGNORECASE)
+
+_STRING_LITERAL = re.compile(r"'([^']*)'")
 
 _FORBIDDEN = re.compile(
     r"\b(INSERT|UPDATE|DELETE|DROP|ALTER|CREATE|REPLACE|TRUNCATE|ATTACH|PRAGMA)\b",
@@ -58,6 +64,10 @@ class QueryResult(BaseModel):
     executed_sql: str = Field(description="The SQL actually run, post-transpile")
     truncated: bool = Field(
         default=False, description="Whether the result hit MAX_ROWS"
+    )
+    hint: str | None = Field(
+        default=None,
+        description="Advice shown to the model when a result looks suspicious",
     )
 
 
@@ -117,6 +127,85 @@ class SqlDatabase:
             "Rewrite the query using only these tables and columns."
         )
 
+    @staticmethod
+    def _looks_empty(rows: list[list[Any]]) -> bool:
+        """Whether a result set found nothing, aggregates included.
+
+        Zero rows is the obvious case. The subtler one is an aggregate: a
+        COUNT over a filter that matched nothing returns one row holding 0,
+        not an empty result, and that is the shape the first live run's
+        SQL007 failure actually had.
+        """
+        if not rows:
+            return True
+        if len(rows) > 1:
+            return False
+        return all(value in {0, None} for value in rows[0])
+
+    @staticmethod
+    def _literals_in(sql: str) -> list[str]:
+        """Returns the single-quoted string literals in a query."""
+        return _STRING_LITERAL.findall(sql)
+
+    def _known_text_values(self) -> set[str]:
+        """Returns the distinct values of every low-cardinality text column.
+
+        Only columns with few distinct values are collected, which is what
+        makes this cheap: those are the category and status columns that
+        appear in WHERE clauses, not free-text names.
+        """
+        values: set[str] = set()
+        tables = self._connection.execute(
+            "SELECT name FROM sqlite_master WHERE type = 'table'"
+        ).fetchall()
+        for (table,) in tables:
+            for column in self._connection.execute(
+                f"PRAGMA table_info({table})"
+            ).fetchall():
+                name, declared_type = column[1], (column[2] or "").upper()
+                if "CHAR" not in declared_type and "TEXT" not in declared_type:
+                    continue
+                rows = self._connection.execute(
+                    f"SELECT DISTINCT {name} FROM {table} LIMIT ?",  # ruff: ignore[hardcoded-sql-expression]
+                    (MAX_ENUM_VALUES + 1,),
+                ).fetchall()
+                if len(rows) <= MAX_ENUM_VALUES:
+                    values.update(str(r[0]) for r in rows if r[0] is not None)
+        return values
+
+    def _empty_result_hint(self, sql: str) -> str | None:
+        """Explains a zero-row result when a filter looks miscased.
+
+        A query that runs and returns nothing is the failure the retry loop
+        cannot see: there is no error to react to. Two of the first live
+        run's three wrong answers were exactly this, filtering on 'Travel'
+        and 'Savings' where the data holds 'travel' and 'savings'.
+
+        Only fires when a literal in the query matches a known value apart
+        from case, so a legitimately empty result stays silent.
+        """
+        literals = self._literals_in(sql)
+        if not literals:
+            return None
+
+        known = self._known_text_values()
+        lowered = {value.lower(): value for value in known}
+
+        corrections = [
+            f"{literal!r} -> {lowered[literal.lower()]!r}"
+            for literal in literals
+            if literal not in known and literal.lower() in lowered
+        ]
+        if not corrections:
+            return None
+
+        return (
+            "The query ran but matched no rows. String comparison is "
+            "case-sensitive and these literals differ from the stored values "
+            "only by case: " + "; ".join(corrections) + ". "
+            "Re-run with the exact stored spelling."
+        )
+
     def run(self, sql: str, dialect: str = DEFAULT_SOURCE_DIALECT) -> QueryResult:
         """Transpiles, validates and executes a read-only query.
 
@@ -160,4 +249,7 @@ class SqlDatabase:
             row_count=len(rows),
             executed_sql=executed,
             truncated=truncated,
+            hint=(
+                self._empty_result_hint(executed) if self._looks_empty(rows) else None
+            ),
         )
