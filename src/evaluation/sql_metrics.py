@@ -22,6 +22,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from google.adk.evaluation.eval_case import (
+    get_all_tool_calls,
+    get_all_tool_responses,
+)
 from google.adk.evaluation.evaluator import (
     EvalStatus,
     EvaluationResult,
@@ -50,17 +54,25 @@ _FAIL = 0.0
 
 
 def _tool_uses(invocation: Invocation | None) -> list[Any]:
-    """Returns the tool calls made during an invocation."""
-    if invocation is None or invocation.intermediate_data is None:
-        return list[Any]()
-    return list(invocation.intermediate_data.tool_uses or [])
+    """Returns the tool calls made during an invocation.
+
+    Goes through ADK's accessor rather than reading `.tool_uses` directly.
+    `intermediate_data` is a union: golden cases loaded from a file carry
+    `IntermediateData`, but a live run carries `InvocationEvents`, where the
+    calls are buried in event content parts. Reading the attribute directly
+    works against the golden shape and raises AttributeError against the
+    live one, which ADK swallows into a null score.
+    """
+    if invocation is None:
+        return []
+    return list(get_all_tool_calls(invocation.intermediate_data) or [])
 
 
 def _tool_responses(invocation: Invocation | None) -> list[Any]:
     """Returns the tool responses received during an invocation."""
-    if invocation is None or invocation.intermediate_data is None:
-        return list[Any]()
-    return list(invocation.intermediate_data.tool_responses or [])
+    if invocation is None:
+        return []
+    return list(get_all_tool_responses(invocation.intermediate_data) or [])
 
 
 def _sql_queries(invocation: Invocation | None) -> list[str]:

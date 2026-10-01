@@ -1,0 +1,1213 @@
+{
+  "cases": [
+    {
+      "eval_id": "SQL001_count_customers",
+      "actual_invocation": {
+        "invocation_id": "e-4e6dc419-0da4-47c8-a04d-a7987b82a0bd",
+        "user_content": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "How many customers are there?",
+              "thought": null,
+              "thought_signature": null,
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "user"
+        },
+        "final_response": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "There are 5 customers.",
+              "thought": null,
+              "thought_signature": "CmYBjz1rX0eArhN8V8Llo09jR7jpwGiaHs-43xdJIWNc6NergU8v1YqQNjhnjbxsF_jbB8NXEqmPKborRA5CHbwFjokuQY4L7VnJHIkotVT15be9t4J0o_G3PSEqHmtpHQFwOsHjgss=",
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "model"
+        },
+        "intermediate_data": {
+          "invocation_events": [
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": {
+                      "id": "adk-d3483817-39d9-4771-85f9-1f2f5fba5126",
+                      "args": {},
+                      "name": "describe_schema",
+                      "partial_args": null,
+                      "will_continue": null
+                    },
+                    "function_response": null,
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": "Co8CAY89a19-fmXxByh3L1iThYcBvLfgYpYF2iZ4XuxmPpVc4ayd92tmuDc09dgcr8Pjlp19D7xksFVjnYOd5rChuSloSwNbSPgNsIDYx9qN9Mjn3NU8h2HfmL14vC95yl9BMsbe__n7FzeTLHtpKjkj0SAg3Uo7aSPqkian1z3ioj02xmT5LjWBrhkSK6l4FtrhbpauU0dIRQoffVORJK2ZkFipkeDko2qguiynTeUJ_Ym0nlG4K48Z0jWmYZuFB7D6JrGdWiKhyuJOzXyFOIGY7rANWkSLzea1cfTvQ8lYe8G0zEocwWqIrPsq7gd2iA3GqiVjJhRXbAXXoo-Bx7ZX825udoPiWBFjw3f017eHvA==",
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "model"
+              },
+              "grounding_metadata": null
+            },
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": null,
+                    "function_response": {
+                      "will_continue": null,
+                      "scheduling": null,
+                      "parts": null,
+                      "id": "adk-d3483817-39d9-4771-85f9-1f2f5fba5126",
+                      "name": "describe_schema",
+                      "response": {
+                        "result": "  accounts(account_id INTEGER, customer_id INTEGER, account_type TEXT, balance REAL, opened_date TEXT)\n  customers(customer_id INTEGER, full_name TEXT, city TEXT, joined_date TEXT)\n  transactions(transaction_id INTEGER, account_id INTEGER, amount REAL, category TEXT, txn_date TEXT)"
+                      }
+                    },
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": null,
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "user"
+              },
+              "grounding_metadata": null
+            },
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": {
+                      "id": "adk-98b7e15c-8f36-4adc-a1ab-2e879aebd908",
+                      "args": {
+                        "query": "SELECT COUNT(customer_id) FROM customers"
+                      },
+                      "name": "run_sql_query",
+                      "partial_args": null,
+                      "will_continue": null
+                    },
+                    "function_response": null,
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": "CqwBAY89a19rU7QRq5EJMgHcF1fP-pKbZRrVPobxFnItJ6rSHiN_zXOJNEmKjmm-VOS3axtarAmdaHV-1m1lKQoeM-VtyMLCpT0EM36itYruURZse4AW63p0CIE07VsrZUMVAjbhygX5pUKwGBt8MVGyMMBxCsXv9WoPP3Ysd6Ze1h0fWv_yhn8lm_kzZsUENMHoDOvAPY4cxJuekTWqsAb3cUGg9G5ltz1SY73nzw==",
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "model"
+              },
+              "grounding_metadata": null
+            },
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": null,
+                    "function_response": {
+                      "will_continue": null,
+                      "scheduling": null,
+                      "parts": null,
+                      "id": "adk-98b7e15c-8f36-4adc-a1ab-2e879aebd908",
+                      "name": "run_sql_query",
+                      "response": {
+                        "result": {
+                          "columns": [
+                            "COUNT(customer_id)"
+                          ],
+                          "rows": [
+                            [
+                              5
+                            ]
+                          ],
+                          "row_count": 1,
+                          "executed_sql": "SELECT COUNT(customer_id) FROM customers",
+                          "truncated": false
+                        }
+                      }
+                    },
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": null,
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "user"
+              },
+              "grounding_metadata": null
+            }
+          ]
+        },
+        "creation_timestamp": 1790845971.9599454,
+        "rubrics": null,
+        "app_details": {
+          "agent_details": {
+            "nl2sql_agent": {
+              "name": "nl2sql_agent",
+              "instructions": "You answer questions about a retail banking database by writing and running SQL.\n\nProcedure:\n1. If you are unsure of a table or column name, call `describe_schema` first. Guessing a name is the most common cause of a failed query.\n2. Write one read-only SELECT (or WITH ... SELECT) statement and run it with `run_sql_query`.\n3. Answer the user's question in plain language, citing the numbers you got back. Do not invent values that are not in the result.\n\nWhen a query fails you are given the database's own error message, the SQL you sent and the schema. Read the error before retrying:\n- \"no such column\" or \"no such table\" means the name is wrong. Check the schema and use the exact name.\n- A syntax error usually means a function that this database does not have. Prefer plain, standard SQL.\nNever resend a query that has already failed unchanged.\n\nIf a query still fails after several attempts, say what you tried and why it did not work. Do not fabricate an answer.\n\n\nYou are an agent. Your internal name is \"nl2sql_agent\".",
+              "tool_declarations": [
+                {
+                  "retrieval": null,
+                  "computer_use": null,
+                  "file_search": null,
+                  "google_search": null,
+                  "google_maps": null,
+                  "code_execution": null,
+                  "enterprise_web_search": null,
+                  "function_declarations": [
+                    {
+                      "description": "Returns the database schema.\n\nUse this before writing a query if you are unsure of a table or column\nname. Names are exact and case-sensitive.\n\nReturns:\n    The tables and their columns, one table per line.",
+                      "name": "describe_schema",
+                      "parameters": null,
+                      "parameters_json_schema": null,
+                      "response": null,
+                      "response_json_schema": {
+                        "type": "string"
+                      },
+                      "behavior": null
+                    },
+                    {
+                      "description": "Runs a read-only SQL query and returns the rows.\n\nWrite a single SELECT (or WITH ... SELECT) statement. BigQuery syntax is\naccepted and translated automatically.\n\nArgs:\n    query: The SQL to run.\n\nReturns:\n    The column names, the rows, and the SQL that was actually executed.\n\nRaises:\n    SqlExecutionError: if the query is rejected or the database refuses\n        it. The message carries the database's own error text, the failed\n        SQL and the schema, so a failed call is directly correctable.",
+                      "name": "run_sql_query",
+                      "parameters": null,
+                      "parameters_json_schema": {
+                        "properties": {
+                          "query": {
+                            "title": "Query",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "query"
+                        ],
+                        "title": "run_sql_queryParams",
+                        "type": "object"
+                      },
+                      "response": null,
+                      "response_json_schema": {
+                        "description": "The outcome of a successful query.",
+                        "properties": {
+                          "columns": {
+                            "description": "Column names, in order",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Columns",
+                            "type": "array"
+                          },
+                          "rows": {
+                            "description": "Result rows, in order",
+                            "items": {
+                              "items": {},
+                              "type": "array"
+                            },
+                            "title": "Rows",
+                            "type": "array"
+                          },
+                          "row_count": {
+                            "description": "Number of rows returned",
+                            "title": "Row Count",
+                            "type": "integer"
+                          },
+                          "executed_sql": {
+                            "description": "The SQL actually run, post-transpile",
+                            "title": "Executed Sql",
+                            "type": "string"
+                          },
+                          "truncated": {
+                            "default": false,
+                            "description": "Whether the result hit MAX_ROWS",
+                            "title": "Truncated",
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "columns",
+                          "rows",
+                          "row_count",
+                          "executed_sql"
+                        ],
+                        "title": "QueryResult",
+                        "type": "object"
+                      },
+                      "behavior": null
+                    }
+                  ],
+                  "google_search_retrieval": null,
+                  "parallel_ai_search": null,
+                  "url_context": null,
+                  "mcp_servers": null,
+                  "exa_ai_search": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "expected_invocation": {
+        "invocation_id": "",
+        "user_content": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "How many customers are there?",
+              "thought": null,
+              "thought_signature": null,
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "user"
+        },
+        "final_response": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "There are 5 customers.",
+              "thought": null,
+              "thought_signature": null,
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "model"
+        },
+        "intermediate_data": {
+          "tool_uses": [
+            {
+              "id": null,
+              "args": null,
+              "name": "run_sql_query",
+              "partial_args": null,
+              "will_continue": null
+            }
+          ],
+          "tool_responses": [
+            {
+              "will_continue": null,
+              "scheduling": null,
+              "parts": null,
+              "id": null,
+              "name": "run_sql_query",
+              "response": {
+                "expected_rows": [
+                  [
+                    5
+                  ]
+                ]
+              }
+            }
+          ],
+          "intermediate_responses": []
+        },
+        "creation_timestamp": 0.0,
+        "rubrics": null,
+        "app_details": null
+      }
+    },
+    {
+      "eval_id": "SQL007_cte_required",
+      "actual_invocation": {
+        "invocation_id": "e-875cf8d3-dda6-4b23-bd30-f9a4c4720414",
+        "user_content": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "Among accounts holding more than 10000, how many are savings accounts?",
+              "thought": null,
+              "thought_signature": null,
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "user"
+        },
+        "final_response": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "There are 0 savings accounts holding more than 10000.",
+              "thought": null,
+              "thought_signature": "CssCAY89a1--tZ3PmqORBnEHURIRO1JmISQk6aQt3QIQILtQBwpm8ekNIvbcepR0dN56oTa3haeQUHkC0ELABqFuI-0ZI3GmNMLO9Y22AtX1VcViYO43_DU-zdmt5VZaiAwfkm7HApcmj9SH8qGIcP9LeYjq5BHAw1AW3-OdtHEr48amXYJE0_-u869nknoSc2Zm849xkqbRywNSuO_AfQ_dl4DQzmuar5LUzDrXYwJjRjIAA6Zcs2nfARohLXNwKbdLaURm9sTgypOGKj9NokLcxQ5xVw6GQvGDdZ1Es8QH9CN_gdEgZR7nKYD495NcMjOLJcLd0cIH8I2dE0rFdXsohOMBZjoUT8VJVGk29muorVhH1ez7e5BWr07dqP8URGXH0fPVbbFTTmMWuN64zn4IGyBsBmk4zgFwvBvVxCdZmo7oUX1Tq4NdJIiy-w==",
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "model"
+        },
+        "intermediate_data": {
+          "invocation_events": [
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": {
+                      "id": "adk-e83fe536-fe6c-471f-8705-589931885f8e",
+                      "args": {},
+                      "name": "describe_schema",
+                      "partial_args": null,
+                      "will_continue": null
+                    },
+                    "function_response": null,
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": "Co4DAY89a1-vqwfqScCfWnLRUlDCWMxLxOUNy059sFAD1BCqx-iv7KNKbYvfvadLcreOod0hNGsz0e7oc7rncHbG0us8s49N4Mo_hFROTifisPMvDklro7VOK_lWvjE0JrVcoSndX485UW_dpp8JWfOI3XYr741Diibsi1Xaz5kKWC0TqwIA3kc1yaHeQMLsBIZq0Q0JtIZY8hEXwNiFrVttEiIk8CRhNRTsxnPX6jOL9kyKmq1JVFsHzDBXVNQvKavgeN2rpzrNz6Vl4987Y8SOdKRQILwdFfvXSUI4QnJVl2_E-Z7EXSa6IBLBuCUnw1op16dMZyUO0SWd3lWS4xfuq368cHt7ZC6f4w45-QWC6TyBpUBUoYzenElX8wErc8pJwqC4WAfcwOnvykUpoyulRtyb2ETfh3joDyGjRbjGfxRAWl2yLk0c8yxvxZFWzAb7wjdvtafc_ZFjdcnvwdYt9AQSX1Vaw_FzahQ_pSB10-U_iQ-2q5oikgHvG4aD99Qun9ZSGL4Nm3VJghRD4Uw=",
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "model"
+              },
+              "grounding_metadata": null
+            },
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": null,
+                    "function_response": {
+                      "will_continue": null,
+                      "scheduling": null,
+                      "parts": null,
+                      "id": "adk-e83fe536-fe6c-471f-8705-589931885f8e",
+                      "name": "describe_schema",
+                      "response": {
+                        "result": "  accounts(account_id INTEGER, customer_id INTEGER, account_type TEXT, balance REAL, opened_date TEXT)\n  customers(customer_id INTEGER, full_name TEXT, city TEXT, joined_date TEXT)\n  transactions(transaction_id INTEGER, account_id INTEGER, amount REAL, category TEXT, txn_date TEXT)"
+                      }
+                    },
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": null,
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "user"
+              },
+              "grounding_metadata": null
+            },
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": {
+                      "id": "adk-f6682416-1293-403b-b8f9-22348853d02d",
+                      "args": {
+                        "query": "SELECT COUNT(account_id) FROM accounts WHERE account_type = 'Savings' AND balance > 10000"
+                      },
+                      "name": "run_sql_query",
+                      "partial_args": null,
+                      "will_continue": null
+                    },
+                    "function_response": null,
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": "Cv0BAY89a1_3ZGf_5jNT0vAjU5Gv-MqZK0AsC_LbngBNVIwgPqNiqlWkq_aEdN-44KXKhZwiKou4lyetWZUMFcQ8r3TBr8ehZpUiYXO5fBK2IBJPC7ZljDpU9rg9ClaRHlRh1r_wdLB9VZxF5PfsVrwcIYk-wxicr_FgzWJjlT1nhXLVsoL3KMiqiqn9e9uirvWI2CRz0QhL1AbmJhAa2BN-Ch8DgjpY4V-1aLpUaYGNRwa6BOpgUKceJsOveGyNqLND9trEMVzqXyTal1onNjWccWpZoXNsBwmU80T6LeB3_E6UXu7HX8D5xz7xYuUmM-6AU9aEebfZMmHAk7efGg==",
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "model"
+              },
+              "grounding_metadata": null
+            },
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": null,
+                    "function_response": {
+                      "will_continue": null,
+                      "scheduling": null,
+                      "parts": null,
+                      "id": "adk-f6682416-1293-403b-b8f9-22348853d02d",
+                      "name": "run_sql_query",
+                      "response": {
+                        "result": {
+                          "columns": [
+                            "COUNT(account_id)"
+                          ],
+                          "rows": [
+                            [
+                              0
+                            ]
+                          ],
+                          "row_count": 1,
+                          "executed_sql": "SELECT COUNT(account_id) FROM accounts WHERE account_type = 'Savings' AND balance > 10000",
+                          "truncated": false
+                        }
+                      }
+                    },
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": null,
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "user"
+              },
+              "grounding_metadata": null
+            }
+          ]
+        },
+        "creation_timestamp": 1790845969.2726457,
+        "rubrics": null,
+        "app_details": {
+          "agent_details": {
+            "nl2sql_agent": {
+              "name": "nl2sql_agent",
+              "instructions": "You answer questions about a retail banking database by writing and running SQL.\n\nProcedure:\n1. If you are unsure of a table or column name, call `describe_schema` first. Guessing a name is the most common cause of a failed query.\n2. Write one read-only SELECT (or WITH ... SELECT) statement and run it with `run_sql_query`.\n3. Answer the user's question in plain language, citing the numbers you got back. Do not invent values that are not in the result.\n\nWhen a query fails you are given the database's own error message, the SQL you sent and the schema. Read the error before retrying:\n- \"no such column\" or \"no such table\" means the name is wrong. Check the schema and use the exact name.\n- A syntax error usually means a function that this database does not have. Prefer plain, standard SQL.\nNever resend a query that has already failed unchanged.\n\nIf a query still fails after several attempts, say what you tried and why it did not work. Do not fabricate an answer.\n\n\nYou are an agent. Your internal name is \"nl2sql_agent\".",
+              "tool_declarations": [
+                {
+                  "retrieval": null,
+                  "computer_use": null,
+                  "file_search": null,
+                  "google_search": null,
+                  "google_maps": null,
+                  "code_execution": null,
+                  "enterprise_web_search": null,
+                  "function_declarations": [
+                    {
+                      "description": "Returns the database schema.\n\nUse this before writing a query if you are unsure of a table or column\nname. Names are exact and case-sensitive.\n\nReturns:\n    The tables and their columns, one table per line.",
+                      "name": "describe_schema",
+                      "parameters": null,
+                      "parameters_json_schema": null,
+                      "response": null,
+                      "response_json_schema": {
+                        "type": "string"
+                      },
+                      "behavior": null
+                    },
+                    {
+                      "description": "Runs a read-only SQL query and returns the rows.\n\nWrite a single SELECT (or WITH ... SELECT) statement. BigQuery syntax is\naccepted and translated automatically.\n\nArgs:\n    query: The SQL to run.\n\nReturns:\n    The column names, the rows, and the SQL that was actually executed.\n\nRaises:\n    SqlExecutionError: if the query is rejected or the database refuses\n        it. The message carries the database's own error text, the failed\n        SQL and the schema, so a failed call is directly correctable.",
+                      "name": "run_sql_query",
+                      "parameters": null,
+                      "parameters_json_schema": {
+                        "properties": {
+                          "query": {
+                            "title": "Query",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "query"
+                        ],
+                        "title": "run_sql_queryParams",
+                        "type": "object"
+                      },
+                      "response": null,
+                      "response_json_schema": {
+                        "description": "The outcome of a successful query.",
+                        "properties": {
+                          "columns": {
+                            "description": "Column names, in order",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Columns",
+                            "type": "array"
+                          },
+                          "rows": {
+                            "description": "Result rows, in order",
+                            "items": {
+                              "items": {},
+                              "type": "array"
+                            },
+                            "title": "Rows",
+                            "type": "array"
+                          },
+                          "row_count": {
+                            "description": "Number of rows returned",
+                            "title": "Row Count",
+                            "type": "integer"
+                          },
+                          "executed_sql": {
+                            "description": "The SQL actually run, post-transpile",
+                            "title": "Executed Sql",
+                            "type": "string"
+                          },
+                          "truncated": {
+                            "default": false,
+                            "description": "Whether the result hit MAX_ROWS",
+                            "title": "Truncated",
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "columns",
+                          "rows",
+                          "row_count",
+                          "executed_sql"
+                        ],
+                        "title": "QueryResult",
+                        "type": "object"
+                      },
+                      "behavior": null
+                    }
+                  ],
+                  "google_search_retrieval": null,
+                  "parallel_ai_search": null,
+                  "url_context": null,
+                  "mcp_servers": null,
+                  "exa_ai_search": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "expected_invocation": {
+        "invocation_id": "",
+        "user_content": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "Among accounts holding more than 10000, how many are savings accounts?",
+              "thought": null,
+              "thought_signature": null,
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "user"
+        },
+        "final_response": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "2 of them are savings accounts.",
+              "thought": null,
+              "thought_signature": null,
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "model"
+        },
+        "intermediate_data": {
+          "tool_uses": [
+            {
+              "id": null,
+              "args": null,
+              "name": "run_sql_query",
+              "partial_args": null,
+              "will_continue": null
+            }
+          ],
+          "tool_responses": [
+            {
+              "will_continue": null,
+              "scheduling": null,
+              "parts": null,
+              "id": null,
+              "name": "run_sql_query",
+              "response": {
+                "expected_rows": [
+                  [
+                    2
+                  ]
+                ]
+              }
+            }
+          ],
+          "intermediate_responses": []
+        },
+        "creation_timestamp": 0.0,
+        "rubrics": null,
+        "app_details": null
+      }
+    },
+    {
+      "eval_id": "SQL008_heal_wrong_column_name",
+      "actual_invocation": {
+        "invocation_id": "e-1ac57ac7-f5a2-40e0-9b8e-384e55b7a534",
+        "user_content": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "List the name of every customer who joined before 2021. The column holding the name is called `customer_name`.",
+              "thought": null,
+              "thought_signature": null,
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "user"
+        },
+        "final_response": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "The customers who joined before 2021 are: Ada Lovelace and Alan Turing.",
+              "thought": null,
+              "thought_signature": "AY89a1-pyNWbwWkY2-RPQhF-o6bqzGkhDXyh4eLcHTd02URXD7-FotX0kvM_ueYd0VCAXvV-o6DTrjstwIafEPLk0yG4tOc9ZSwiTEpOTtt2qxRC8Bkhu_fJGGU6LKSuPyC62_KzKCPXH6TnoCFprUmakc5LKenbtHawHP9G3UXh_kO7xbFf1RKlGG_J3gvcXFJGgq7JMp1RIYfOlvfQeqD2vIR8DWwy81_EmhwFuUWiu7Pwmq2mIo1AyQwOOJIMsg_GAH8MhJ3ybe6H79BrXPROY_9CkhGOwHObHEItgtiVHVKA1dt9PaeP6vU1bYXwtSw8ubOP7SuXM8wSbcQdxBDyYmSliPa3S_XJEdfDoGlwjNodN0dIbnzYJMqqjZC3BjjGMqwqb9qq",
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "model"
+        },
+        "intermediate_data": {
+          "invocation_events": [
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": {
+                      "id": "adk-4c98182d-bbb9-4482-b1b7-5108723dbc4a",
+                      "args": {},
+                      "name": "describe_schema",
+                      "partial_args": null,
+                      "will_continue": null
+                    },
+                    "function_response": null,
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": "CvoCAY89a1_ULIzxGiN8ByX5UK8wG86kCswMTB3NvXo0Hv4yosnH9Z-Avz_Nl7Z_3BGHz8sNre3HgvidB9kCOOiBfSsHF3vujBMpg6kaq5mHI0xwXbZJqTBE1ZuGwAcf6n-2PNpphB6zbBfjFCu6_caAuWXcWHPEmEhka20ekrIU5A70F9eqEjHLQLXhawQ40KJmybmbdGAmBwGIXssod6nX0DyDk1bNcneWT4LD3z-rt6ULx9LeATLrg-CpMfWovo58boNxP6PVD9Emnxs1kePF7g7Qd2Qo00Wt2j5ts2RLu8QWKM2CYFGmqeFlgOExUBAtbCkMuoyMU9ZqzCn1sdER5JGiZZiGdmfr4cdAU9P-l9R7UVosdD7T9petjydffDCZdfsu9pcaju815Birs3otZ2HsZUq3xD_K1i_NyBqj_CpgykF_-gxL1Yk3PTBM7L6maSpU4jbzyNFXnAS_4b-FNMCx9xwJXw15W0AZAraWD7nYEPeVK60AC-1K",
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "model"
+              },
+              "grounding_metadata": null
+            },
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": null,
+                    "function_response": {
+                      "will_continue": null,
+                      "scheduling": null,
+                      "parts": null,
+                      "id": "adk-4c98182d-bbb9-4482-b1b7-5108723dbc4a",
+                      "name": "describe_schema",
+                      "response": {
+                        "result": "  accounts(account_id INTEGER, customer_id INTEGER, account_type TEXT, balance REAL, opened_date TEXT)\n  customers(customer_id INTEGER, full_name TEXT, city TEXT, joined_date TEXT)\n  transactions(transaction_id INTEGER, account_id INTEGER, amount REAL, category TEXT, txn_date TEXT)"
+                      }
+                    },
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": null,
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "user"
+              },
+              "grounding_metadata": null
+            },
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": {
+                      "id": "adk-b6a5d708-9dea-4aa2-b108-48425a3a503a",
+                      "args": {
+                        "query": "SELECT full_name FROM customers WHERE joined_date < '2021-01-01'"
+                      },
+                      "name": "run_sql_query",
+                      "partial_args": null,
+                      "will_continue": null
+                    },
+                    "function_response": null,
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": "CvkCAY89a1_0boTgEDZGYRQTTTcUPKKsYqN6le1mMoVBF54AOQKxziqsfTK-MNOJFqbBbk4v5S0Q3IzSUYlC0Muk0JqiiBwehs2QKutwlkjJPBTDa6gOHHjFB_bGT-TPrbTOcBjXbjOt8OnUc3ePB_Gho-PiAF3DYK2mqfmUr13gGQ8rhhgKQrydAT1s0ehL6Wxq7h_5JtoE1IMHjxG061gsfum4pO09yoDoJu5I6F6ci1vYOG1Jm_r21W5FbCKPutjyPg0dkUtiXnOwG90ZQiJKKwXSeMRFxPdOgZtuPfFCoOJhCerUljZ6FDth2SeYO6pNzEJE36ASgxv3V7ttaFa9I2sOzPOMweQpdgiwWviJq3XK8U3dRVZvge2XR7g5WkhkJxgL2fzvnN3-ZKlenn9odtiTkp18rE2qPeim7VL7DQqM0OIetTNClB8UZl-708aJeFqIeQyQmPqYsgGYq1ycEeglsmnayDIJwTp2qLRAsHljAjZ4FWvCM4A=",
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "model"
+              },
+              "grounding_metadata": null
+            },
+            {
+              "author": "nl2sql_agent",
+              "content": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": null,
+                    "function_response": {
+                      "will_continue": null,
+                      "scheduling": null,
+                      "parts": null,
+                      "id": "adk-b6a5d708-9dea-4aa2-b108-48425a3a503a",
+                      "name": "run_sql_query",
+                      "response": {
+                        "result": {
+                          "columns": [
+                            "full_name"
+                          ],
+                          "rows": [
+                            [
+                              "Ada Lovelace"
+                            ],
+                            [
+                              "Alan Turing"
+                            ]
+                          ],
+                          "row_count": 2,
+                          "executed_sql": "SELECT full_name FROM customers WHERE joined_date < '2021-01-01'",
+                          "truncated": false
+                        }
+                      }
+                    },
+                    "inline_data": null,
+                    "text": null,
+                    "thought": null,
+                    "thought_signature": null,
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "user"
+              },
+              "grounding_metadata": null
+            }
+          ]
+        },
+        "creation_timestamp": 1790845969.2563467,
+        "rubrics": null,
+        "app_details": {
+          "agent_details": {
+            "nl2sql_agent": {
+              "name": "nl2sql_agent",
+              "instructions": "You answer questions about a retail banking database by writing and running SQL.\n\nProcedure:\n1. If you are unsure of a table or column name, call `describe_schema` first. Guessing a name is the most common cause of a failed query.\n2. Write one read-only SELECT (or WITH ... SELECT) statement and run it with `run_sql_query`.\n3. Answer the user's question in plain language, citing the numbers you got back. Do not invent values that are not in the result.\n\nWhen a query fails you are given the database's own error message, the SQL you sent and the schema. Read the error before retrying:\n- \"no such column\" or \"no such table\" means the name is wrong. Check the schema and use the exact name.\n- A syntax error usually means a function that this database does not have. Prefer plain, standard SQL.\nNever resend a query that has already failed unchanged.\n\nIf a query still fails after several attempts, say what you tried and why it did not work. Do not fabricate an answer.\n\n\nYou are an agent. Your internal name is \"nl2sql_agent\".",
+              "tool_declarations": [
+                {
+                  "retrieval": null,
+                  "computer_use": null,
+                  "file_search": null,
+                  "google_search": null,
+                  "google_maps": null,
+                  "code_execution": null,
+                  "enterprise_web_search": null,
+                  "function_declarations": [
+                    {
+                      "description": "Returns the database schema.\n\nUse this before writing a query if you are unsure of a table or column\nname. Names are exact and case-sensitive.\n\nReturns:\n    The tables and their columns, one table per line.",
+                      "name": "describe_schema",
+                      "parameters": null,
+                      "parameters_json_schema": null,
+                      "response": null,
+                      "response_json_schema": {
+                        "type": "string"
+                      },
+                      "behavior": null
+                    },
+                    {
+                      "description": "Runs a read-only SQL query and returns the rows.\n\nWrite a single SELECT (or WITH ... SELECT) statement. BigQuery syntax is\naccepted and translated automatically.\n\nArgs:\n    query: The SQL to run.\n\nReturns:\n    The column names, the rows, and the SQL that was actually executed.\n\nRaises:\n    SqlExecutionError: if the query is rejected or the database refuses\n        it. The message carries the database's own error text, the failed\n        SQL and the schema, so a failed call is directly correctable.",
+                      "name": "run_sql_query",
+                      "parameters": null,
+                      "parameters_json_schema": {
+                        "properties": {
+                          "query": {
+                            "title": "Query",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "query"
+                        ],
+                        "title": "run_sql_queryParams",
+                        "type": "object"
+                      },
+                      "response": null,
+                      "response_json_schema": {
+                        "description": "The outcome of a successful query.",
+                        "properties": {
+                          "columns": {
+                            "description": "Column names, in order",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Columns",
+                            "type": "array"
+                          },
+                          "rows": {
+                            "description": "Result rows, in order",
+                            "items": {
+                              "items": {},
+                              "type": "array"
+                            },
+                            "title": "Rows",
+                            "type": "array"
+                          },
+                          "row_count": {
+                            "description": "Number of rows returned",
+                            "title": "Row Count",
+                            "type": "integer"
+                          },
+                          "executed_sql": {
+                            "description": "The SQL actually run, post-transpile",
+                            "title": "Executed Sql",
+                            "type": "string"
+                          },
+                          "truncated": {
+                            "default": false,
+                            "description": "Whether the result hit MAX_ROWS",
+                            "title": "Truncated",
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "columns",
+                          "rows",
+                          "row_count",
+                          "executed_sql"
+                        ],
+                        "title": "QueryResult",
+                        "type": "object"
+                      },
+                      "behavior": null
+                    }
+                  ],
+                  "google_search_retrieval": null,
+                  "parallel_ai_search": null,
+                  "url_context": null,
+                  "mcp_servers": null,
+                  "exa_ai_search": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "expected_invocation": {
+        "invocation_id": "",
+        "user_content": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "List the name of every customer who joined before 2021. The column holding the name is called `customer_name`.",
+              "thought": null,
+              "thought_signature": null,
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "user"
+        },
+        "final_response": {
+          "parts": [
+            {
+              "media_resolution": null,
+              "code_execution_result": null,
+              "executable_code": null,
+              "file_data": null,
+              "function_call": null,
+              "function_response": null,
+              "inline_data": null,
+              "text": "Ada Lovelace and Alan Turing joined before 2021. Note the column is actually called full_name, not customer_name.",
+              "thought": null,
+              "thought_signature": null,
+              "video_metadata": null,
+              "tool_call": null,
+              "tool_response": null,
+              "part_metadata": null,
+              "audio_transcription": null,
+              "media_processing": null,
+              "speech_metadata": null
+            }
+          ],
+          "role": "model"
+        },
+        "intermediate_data": {
+          "tool_uses": [
+            {
+              "id": null,
+              "args": null,
+              "name": "run_sql_query",
+              "partial_args": null,
+              "will_continue": null
+            }
+          ],
+          "tool_responses": [
+            {
+              "will_continue": null,
+              "scheduling": null,
+              "parts": null,
+              "id": null,
+              "name": "run_sql_query",
+              "response": {
+                "expected_rows": [
+                  [
+                    "Ada Lovelace"
+                  ],
+                  [
+                    "Alan Turing"
+                  ]
+                ]
+              }
+            }
+          ],
+          "intermediate_responses": []
+        },
+        "creation_timestamp": 0.0,
+        "rubrics": null,
+        "app_details": null
+      }
+    }
+  ]
+}
