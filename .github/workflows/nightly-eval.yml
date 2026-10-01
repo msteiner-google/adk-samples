@@ -22,6 +22,10 @@ jobs:
   evaluate:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      # See ci.yml: every `uv run` would otherwise re-sync from uv.lock and
+      # undo the resolution below.
+      UV_NO_SYNC: "1"
     steps:
       - uses: actions/checkout@v4
 
@@ -48,9 +52,13 @@ jobs:
         with:
           enable-cache: true
 
+      # Resolves from the public index, not uv.lock. See the comment in
+      # ci.yml for why.
       - name: Install dependencies
         if: steps.creds.outputs.available == 'true'
-        run: uv sync --all-extras --dev
+        run: |
+          uv venv
+          uv pip install --python .venv -e . --group dev
 
       - name: Run the evaluation matrix
         if: steps.creds.outputs.available == 'true'

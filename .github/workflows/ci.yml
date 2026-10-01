@@ -15,6 +15,11 @@ jobs:
   # are needed. This is the gate that runs on every pull request.
   lint-and-test:
     runs-on: ubuntu-latest
+    env:
+      # Every `make` target shells out to `uv run`, which re-syncs the
+      # environment from uv.lock before running. That would undo the
+      # resolution in "Install dependencies" on the very first target.
+      UV_NO_SYNC: "1"
     steps:
       - uses: actions/checkout@v4
 
@@ -26,8 +31,22 @@ jobs:
       - name: Set up Python
         run: uv python install
 
+      # Resolves from the public index rather than from uv.lock.
+      #
+      # uv.lock is generated on a workstation behind a private package
+      # registry, so it records absolute URLs pointing at that registry.
+      # These runners cannot reach it, and `uv sync` would fail on the first
+      # download. `uv pip install` ignores uv.lock entirely and resolves
+      # against whatever index the runner is configured for, which is PyPI.
+      #
+      # The trade-off is deliberate: CI tests the newest versions allowed by
+      # pyproject.toml rather than the pinned set. That catches upstream
+      # breakage early, and it means a green CI run does not prove the
+      # lockfile itself is installable.
       - name: Install dependencies
-        run: uv sync --all-extras --dev
+        run: |
+          uv venv
+          uv pip install --python .venv -e . --group dev
 
       - name: Lint
         run: make check

@@ -7,6 +7,12 @@ part that can be checked mechanically.
 
 It cannot check that a file does what the map says it does. That still needs
 a reader.
+
+`docs/delivery-log.md` is deliberately not checked. It is a record of what
+each PR changed, so it legitimately names things that were deleted, and
+pinning it to the current tree would force a historical document to be
+rewritten whenever the present moves. Its paths were verified once, when it
+was written.
 """
 
 import pathlib
