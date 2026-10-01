@@ -55,6 +55,11 @@ schema and use the exact name.
 Prefer plain, standard SQL.
 Never resend a query that has already failed unchanged.
 
+A query that runs but returns nothing is not an answer. Check the `hint` \
+field on the result: string comparison is case-sensitive, so filtering on \
+'Travel' finds nothing when the stored value is 'travel'. Re-run with the \
+exact stored spelling before reporting an empty result.
+
 If a query still fails after several attempts, say what you tried and why it \
 did not work. Do not fabricate an answer.
 """

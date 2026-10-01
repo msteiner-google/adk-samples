@@ -1,8 +1,15 @@
 """Unit tests for the SQLite NL2SQL runtime."""
 
+import pathlib
+
 import pytest
 
-from src.utils.sql_runtime import MAX_ROWS, SqlDatabase, SqlExecutionError
+from src.utils.sql_runtime import (
+    MAX_ENUM_VALUES,
+    MAX_ROWS,
+    SqlDatabase,
+    SqlExecutionError,
+)
 
 
 @pytest.fixture
@@ -117,3 +124,84 @@ def test_two_databases_are_isolated():
     finally:
         first.close()
         second.close()
+
+
+def test_miscased_filter_on_empty_result_gets_a_hint(db: SqlDatabase):
+    """The failure the retry loop cannot see: a query that runs and finds
+    nothing raises no error, so without a hint there is nothing to react to.
+    """
+    result = db.run("SELECT * FROM accounts WHERE account_type = 'Savings'")
+
+    assert result.row_count == 0
+    assert result.hint is not None
+    assert "'Savings' -> 'savings'" in result.hint
+
+
+def test_miscased_filter_on_a_zero_aggregate_gets_a_hint(db: SqlDatabase):
+    """A COUNT over a filter matching nothing returns one row holding 0,
+    not an empty result. That is the shape the live SQL007 failure had.
+    """
+    result = db.run("SELECT COUNT(*) FROM accounts WHERE account_type = 'Savings'")
+
+    assert result.rows == [[0]]
+    assert result.hint is not None
+
+
+def test_genuinely_absent_value_gets_no_hint(db: SqlDatabase):
+    """Nothing in the data resembles this, so there is nothing to suggest."""
+    assert db.run("SELECT * FROM customers WHERE city = 'Atlantis'").hint is None
+
+
+def test_genuine_zero_without_a_case_problem_gets_no_hint(db: SqlDatabase):
+    """A real count of zero must not be second-guessed."""
+    result = db.run(
+        "SELECT COUNT(*) FROM customers WHERE city = 'Milan' AND city = 'London'"
+    )
+
+    assert result.rows == [[0]]
+    assert result.hint is None
+
+
+def test_correct_casing_gets_no_hint(db: SqlDatabase):
+    """A working query must stay quiet."""
+    assert db.run("SELECT * FROM accounts WHERE account_type = 'savings'").hint is None
+
+
+def test_high_cardinality_columns_are_not_treated_as_enumerations(
+    tmp_path: pathlib.Path,
+):
+    """Distinct values are only collected for short value lists.
+
+    The seeded database is too small to show this: with five customers even
+    full_name looks like an enumeration, and suggesting its casing is in
+    fact a correct correction. The guard that matters is cardinality, so
+    this builds a column that exceeds it.
+    """
+    schema = tmp_path / "wide.sql"
+    rows = ",\n".join(f"('user{i:03d}')" for i in range(MAX_ENUM_VALUES + 5))
+    schema.write_text(
+        f"CREATE TABLE people (handle TEXT);\nINSERT INTO people (handle) VALUES\n{rows};",
+        encoding="utf-8",
+    )
+    database = SqlDatabase(schema_path=schema)
+    try:
+        result = database.run("SELECT * FROM people WHERE handle = 'USER001'")
+        assert result.row_count == 0
+        assert result.hint is None
+    finally:
+        database.close()
+
+
+def test_short_value_lists_are_treated_as_enumerations(tmp_path: pathlib.Path):
+    """The other side of the same boundary."""
+    schema = tmp_path / "narrow.sql"
+    rows = ",\n".join(f"('state{i}')" for i in range(MAX_ENUM_VALUES - 2))
+    schema.write_text(
+        f"CREATE TABLE things (state TEXT);\nINSERT INTO things (state) VALUES\n{rows};",
+        encoding="utf-8",
+    )
+    database = SqlDatabase(schema_path=schema)
+    try:
+        assert database.run("SELECT * FROM things WHERE state = 'STATE1'").hint
+    finally:
+        database.close()

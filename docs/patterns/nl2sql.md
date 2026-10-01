@@ -90,6 +90,45 @@ the query.
 
 ---
 
+## Pattern 3b: An empty result is a failure the retry loop cannot see
+
+**The finding.** The first live eval run got three of ten cases wrong. Two of
+them had the same cause, and it was not one the self-healing loop could catch:
+the agent filtered on `'Travel'` and `'Savings'` where the stored values are
+`'travel'` and `'savings'`. SQLite string comparison is case-sensitive, so both
+queries **succeeded** and returned nothing. No exception, no error text,
+nothing for Pattern 1 to feed back.
+
+**Worse, it hides in aggregates.** `SELECT COUNT(*) ... WHERE account_type =
+'Savings'` does not return zero rows. It returns one row containing `0`, which
+looks like a perfectly good answer.
+
+**The pattern.** When a result is empty, check whether any string literal in
+the query matches a stored value apart from case, and if so say so on the
+result:
+
+```
+The query ran but matched no rows. String comparison is case-sensitive and
+these literals differ from the stored values only by case:
+'Travel' -> 'travel'. Re-run with the exact stored spelling.
+```
+
+**Keep it quiet when it has nothing to say.** The hint only fires when a
+literal actually case-matches a known value. `WHERE city = 'Atlantis'` returns
+nothing and gets no hint, because nothing in the data resembles it, and a real
+count of zero is not second-guessed. A hint that fires on every empty result
+is noise, and noise gets ignored.
+
+**Why distinct values are cheap here.** Only columns with at most
+`MAX_ENUM_VALUES` distinct values are collected, discovered with a `LIMIT`, so
+a high-cardinality column costs one short query and contributes nothing. Those
+low-cardinality columns are the category and status fields that appear in
+`WHERE` clauses anyway.
+
+**The general lesson.** Self-healing keyed on exceptions only covers failures
+loud enough to raise. Ask what a *silent* wrong answer looks like in your
+domain and give it a voice, or the retry loop will never see it.
+
 ## Pattern 4: Grade the rows, not the SQL
 
 **The pattern.** Score a query by re-running it and comparing result sets
@@ -161,3 +200,11 @@ run.
 - **Recovery quality.** The metric records *whether* the agent recovered, not
   how efficiently. An agent that flails for three attempts scores the same as
   one that fixes the query immediately.
+- **Whether the empty-result hint works.** Pattern 3b was added in response to
+  the first live run but has not been measured against a second one. It is a
+  hypothesis with a mechanism, not a result.
+- **Extra columns.** The third wrong answer in that run returned the right
+  names plus an unrequested `customer_id` column, and `sql_result_match`
+  scored it 0. Treating the expected result set as an exact contract is
+  defensible, but whether it is the most useful signal for optimization is
+  untested.
