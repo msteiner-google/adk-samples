@@ -1,0 +1,433 @@
+{
+  "eval_set_id": "nl2sql_evalset",
+  "name": "NL2SQL golden dataset",
+  "description": "Natural-language questions over the SQLite banking schema in data/nl2sql_schema.sql. Expected answers are result sets, not SQL strings: many queries are correct and only the rows settle it. The last three cases are designed to fail on the first attempt so that the self-healing loop is actually exercised rather than assumed.",
+  "eval_cases": [
+    {
+      "eval_id": "SQL001_count_customers",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "How many customers are there?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      5
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "There are 5 customers."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "SQL002_filter_by_city",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "Which customers are based in Milan?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      "Grace Hopper"
+                    ],
+                    [
+                      "Katherine Johnson"
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "Grace Hopper and Katherine Johnson are in Milan."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "SQL003_aggregate_group_by",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "How many customers are in each city? Order by city."
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      "London",
+                      2
+                    ],
+                    [
+                      "Milan",
+                      2
+                    ],
+                    [
+                      "Zurich",
+                      1
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "London has 2, Milan has 2 and Zurich has 1."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "SQL004_join_two_tables",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "What is the total balance held by Ada Lovelace across all her accounts?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      20500.0
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "Ada Lovelace holds 20500.00 in total."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "SQL005_three_table_join",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "Which city's customers have spent the most on travel? Return the city and the total travel amount."
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      "Zurich",
+                      -1250.0
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "Zurich, with 1250.00 debited for travel."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "SQL006_negative_amounts",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "How many transactions are debits, meaning the amount is negative?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      8
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "8 transactions are debits."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "SQL007_cte_required",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "Among accounts holding more than 10000, how many are savings accounts?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      2
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "2 of them are savings accounts."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "SQL008_heal_wrong_column_name",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "List the name of every customer who joined before 2021. The column holding the name is called `customer_name`."
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      "Ada Lovelace"
+                    ],
+                    [
+                      "Alan Turing"
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "Ada Lovelace and Alan Turing joined before 2021. Note the column is actually called full_name, not customer_name."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "SQL009_heal_unsupported_function",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "How many transactions happened in 2024? Use EXTRACT(YEAR FROM txn_date) to get the year."
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      13
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "All 13 transactions happened in 2024. EXTRACT is not available, so the year was matched on the date text instead."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "SQL010_heal_wrong_table_name",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "What is the average balance in the `bank_accounts` table?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "run_sql_query"
+              }
+            ],
+            "tool_responses": [
+              {
+                "name": "run_sql_query",
+                "response": {
+                  "expected_rows": [
+                    [
+                      10327.357142857143
+                    ]
+                  ]
+                }
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "The average balance is about 10327.36. The table is called accounts, not bank_accounts."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
-.PHONY: eval optimize convert check test report batch eval-simple eval-layout optimize-simple optimize-layout bench-thinking
+.PHONY: eval optimize convert check test report batch eval-simple eval-layout eval-nl2sql optimize-simple optimize-layout optimize-nl2sql bench-thinking
 
-eval: eval-simple eval-layout
+eval: eval-simple eval-layout eval-nl2sql
 
 eval-simple: convert
 	adk eval src/agents/simple_agent tests/eval/evalsets/golden_evalset.json --config_file_path tests/eval/eval_config.json --print_detailed_results
@@ -8,14 +8,22 @@ eval-simple: convert
 eval-layout: convert
 	adk eval src/agents/layout_aware_agent tests/eval/evalsets/golden_evalset.json --config_file_path tests/eval/eval_config.json --print_detailed_results
 
+# The NL2SQL agent runs against its own evalset and its own config, which
+# registers the custom result-match and self-healing metrics.
+eval-nl2sql: convert
+	adk eval src/agents/nl2sql_agent tests/eval/evalsets/nl2sql_evalset.json --config_file_path tests/eval/nl2sql_eval_config.json --print_detailed_results
+
 # Run prompt optimization using the official ADK GEPARootAgentPromptOptimizer
-optimize: optimize-simple optimize-layout
+optimize: optimize-simple optimize-layout optimize-nl2sql
 
 optimize-simple: convert
 	adk optimize src/agents/simple_agent --sampler_config_file_path tests/eval/sampler_config.json --optimizer_config_file_path tests/eval/optimizer_config.json --print_detailed_results
 
 optimize-layout: convert
 	adk optimize src/agents/layout_aware_agent --sampler_config_file_path tests/eval/layout_aware_agent_sampler_config.json --optimizer_config_file_path tests/eval/optimizer_config.json --print_detailed_results
+
+optimize-nl2sql: convert
+	adk optimize src/agents/nl2sql_agent --sampler_config_file_path tests/eval/nl2sql_sampler_config.json --optimizer_config_file_path tests/eval/optimizer_config.json --print_detailed_results
 
 # Sweep the thinking budget to trade accuracy off against latency and cost.
 # AGENT and BUDGETS are overridable: make bench-thinking AGENT=layout_aware_agent

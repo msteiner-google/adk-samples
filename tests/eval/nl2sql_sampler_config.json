@@ -1,0 +1,24 @@
+{
+  "app_name": "nl2sql_agent",
+  "eval_config": {
+    "criteria": {
+      "sql_result_match": 1.0,
+      "final_response_match_v2": {
+        "threshold": 0.7,
+        "judge_model_options": {
+          "judge_model": "gemini-2.5-flash"
+        }
+      }
+    },
+    "custom_metrics": {
+      "sql_result_match": {
+        "code_config": {
+          "name": "src.evaluation.sql_metrics.sql_result_match"
+        },
+        "description": "1.0 when re-running the agent's final SQL returns the expected rows."
+      }
+    }
+  },
+  "train_eval_set": "nl2sql_evalset",
+  "validation_eval_set": "nl2sql_evalset"
+}
