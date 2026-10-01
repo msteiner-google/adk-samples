@@ -1,0 +1,86 @@
+name: Nightly evaluation
+
+# Unlike CI, this calls the model and therefore costs money. It is scheduled
+# rather than triggered per push, and skips itself when the Google Cloud
+# credentials are absent (forks, or a repo that has not been configured yet)
+# rather than failing with an authentication error that looks like a bug.
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+    inputs:
+      budgets:
+        description: "Comma-separated thinking budgets, e.g. 0,2048,-1"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for credentials
+        id: creds
+        run: |
+          if [ -n "${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No Google Cloud credentials configured; skipping."
+          fi
+
+      - name: Authenticate to Google Cloud
+        if: steps.creds.outputs.available == 'true'
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Install uv
+        if: steps.creds.outputs.available == 'true'
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        if: steps.creds.outputs.available == 'true'
+        run: uv sync --all-extras --dev
+
+      - name: Run the evaluation matrix
+        if: steps.creds.outputs.available == 'true'
+        env:
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
+          GOOGLE_CLOUD_LOCATION: ${{ secrets.GOOGLE_CLOUD_LOCATION }}
+          GOOGLE_GENAI_USE_VERTEXAI: "true"
+        run: |
+          uv run python scripts/run_batch_eval.py \
+            ${{ github.event.inputs.budgets && format('--budgets {0}', github.event.inputs.budgets) || '' }}
+
+      # Always produce the report, even when the matrix found failures: the
+      # report is how you find out what failed.
+      - name: Generate the report
+        if: steps.creds.outputs.available == 'true' && always()
+        run: uv run python scripts/generate_report.py --output reports/nightly.md
+
+      - name: Upload the report
+        if: steps.creds.outputs.available == 'true' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: |
+            reports/nightly.md
+            reports/batch-*.json
+            reports/token_usage.jsonl
+          if-no-files-found: warn
+
+      # Separate from report generation so that a regression fails the run
+      # only after the evidence has been uploaded.
+      - name: Fail on regression
+        if: steps.creds.outputs.available == 'true'
+        run: uv run python scripts/generate_report.py --fail-on-regression

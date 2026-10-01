@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Everything here is free and offline: no model is called, no credentials
+  # are needed. This is the gate that runs on every pull request.
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Lint
+        run: make check
+
+      - name: Test
+        run: make test
+
+      # Guards the conversion step itself. It embeds the PDFs under data/ as
+      # base64, so a broken template or a missing file is caught here rather
+      # than at the start of a paid eval run.
+      - name: Build the evalset
+        run: make convert
+
+      - name: Check the report generator runs
+        run: uv run python scripts/generate_report.py --help
+
+      - name: Check the batch matrix expands
+        run: uv run python scripts/run_batch_eval.py --dry-run --budgets 0,2048
