@@ -1,0 +1,43 @@
+{
+  "criteria": {
+    "sql_result_match": 1.0,
+    "sql_self_heal_recovery": 1.0,
+    "final_response_match_v2": {
+      "threshold": 0.7,
+      "judge_model_options": {
+        "judge_model": "gemini-2.5-flash"
+      }
+    },
+    "rubric_based_tool_use_quality_v1": {
+      "threshold": 0.7,
+      "rubrics": [
+        {
+          "rubric_id": "error_driven_correction",
+          "rubric_content": {
+            "text_property": "When a query fails, the agent must read the database error it was given and change the specific thing the error identifies. Penalize resending an unchanged query, guessing at a new name without consulting the schema, or abandoning the task while a correctable error is outstanding."
+          }
+        },
+        {
+          "rubric_id": "no_fabricated_results",
+          "rubric_content": {
+            "text_property": "Every figure in the final answer must come from a successful query result. Penalize any number that was not returned by the tool, and penalize presenting an answer as fact when all query attempts failed."
+          }
+        }
+      ]
+    }
+  },
+  "custom_metrics": {
+    "sql_result_match": {
+      "code_config": {
+        "name": "src.evaluation.sql_metrics.sql_result_match"
+      },
+      "description": "1.0 when re-running the agent's final SQL returns the expected rows. Compares result sets rather than query text, because many spellings of a query are correct and only the rows settle it."
+    },
+    "sql_self_heal_recovery": {
+      "code_config": {
+        "name": "src.evaluation.sql_metrics.sql_self_heal_recovery"
+      },
+      "description": "Among invocations whose first query failed, the share that went on to run a successful one. Invocations that never failed are skipped, so padding the dataset with easy queries cannot inflate the score."
+    }
+  }
+}
