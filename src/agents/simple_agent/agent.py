@@ -1,7 +1,9 @@
 """Agent using LlmAgent to extract data from bank documents via multimodal input."""
 
 from google.adk.agents.llm_agent import LlmAgent
+from google.adk.apps.app import App
 
+from src.utils.accounting import TokenAccountantPlugin
 from src.utils.data_model import StructuredResponse
 from src.utils.model import get_geofenced_gemini_model
 from src.utils.patch import apply_adk_patch
@@ -21,4 +23,12 @@ root_agent = LlmAgent(
     model=get_geofenced_gemini_model(),
     output_schema=StructuredResponse,
     output_key="structured_extraction",
+)
+
+# The App name must match the directory name: `adk optimize` derives app_name
+# from the path and rejects a mismatch against the sampler config.
+app = App(
+    name="simple_agent",
+    root_agent=root_agent,
+    plugins=[TokenAccountantPlugin()],
 )

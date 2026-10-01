@@ -1,7 +1,9 @@
 """Module for the Layout Aware A2A orchestrator agent."""
 
 from google.adk.agents.llm_agent import Agent
+from google.adk.apps.app import App
 
+from src.utils.accounting import TokenAccountantPlugin
 from src.utils.model import get_geofenced_gemini_model
 from src.utils.patch import apply_adk_patch
 
@@ -25,3 +27,12 @@ orchestrator_agent = Agent(
 )
 
 root_agent = orchestrator_agent
+
+# The App name must match the directory name: `adk optimize` derives app_name
+# from the path and rejects a mismatch against the sampler config.
+# One accountant for the whole app attributes spend across all three agents.
+app = App(
+    name="layout_aware_agent",
+    root_agent=root_agent,
+    plugins=[TokenAccountantPlugin()],
+)
