@@ -9,6 +9,10 @@ implements it in **[docs/topic-coverage.md](docs/topic-coverage.md)**, with an
 honest account of what has been verified by a live run and what has only been
 unit tested. Start there.
 
+For how the project got here, [docs/delivery-log.md](docs/delivery-log.md)
+records what each merged PR changed against the baseline it started from, the
+reasoning behind the choices, and the bugs found along the way.
+
 ## Repository Structure
 
 ```
