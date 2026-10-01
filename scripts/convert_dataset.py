@@ -8,7 +8,7 @@ import pathlib
 from typing import Any
 
 
-def process_node(node: Any, project_root: pathlib.Path) -> Any:  # noqa: ANN401
+def process_node(node: Any, project_root: pathlib.Path) -> Any:  # ruff: ignore[any-type]
     """Recursively processes the JSON tree to embed files and stringify text."""
     if isinstance(node, dict):
         # 1. Handle file embedding: {"file_path": "..."} -> {"inline_data": {...}}
@@ -40,11 +40,37 @@ def process_node(node: Any, project_root: pathlib.Path) -> Any:  # noqa: ANN401
     return node
 
 
+def discover_agent_dirs(project_root: pathlib.Path) -> list[pathlib.Path]:
+    """Returns every agent package under src/agents (one containing agent.py)."""
+    agents_root = project_root / "src" / "agents"
+    if not agents_root.is_dir():
+        return []
+    return sorted(d for d in agents_root.iterdir() if (d / "agent.py").is_file())
+
+
+def link_evalset_into_agents(
+    output_file: pathlib.Path, project_root: pathlib.Path
+) -> None:
+    """Symlinks the generated evalset into every agent dir.
+
+    `adk optimize` resolves `train_eval_set` by id, which means it looks for
+    `<eval_set_id>.evalset.json` next to the agent module. Every agent needs
+    its own link, so this is derived from the filesystem rather than hardcoded.
+    """
+    link_name = f"{output_file.stem}.evalset.json"
+    for agent_dir in discover_agent_dirs(project_root):
+        link_path = agent_dir / link_name
+        if link_path.exists() or link_path.is_symlink():
+            link_path.unlink()
+        link_path.symlink_to(os.path.relpath(output_file, agent_dir))
+        print(f"Created symlink: {link_path}")  # ruff: ignore[print]
+
+
 def convert_to_adk_format(input_path: str, output_path: str) -> None:
     """Converts a template evalset to a full ADK evalset by embedding binaries."""
     input_file = pathlib.Path(input_path)
     if not input_file.exists():
-        print(f"Error: Input file not found: {input_path}")  # noqa: T201
+        print(f"Error: Input file not found: {input_path}")  # ruff: ignore[print]
         return
 
     with input_file.open("r", encoding="utf-8") as f:
@@ -57,18 +83,9 @@ def convert_to_adk_format(input_path: str, output_path: str) -> None:
     output_file.parent.mkdir(parents=True, exist_ok=True)
     with output_file.open("w", encoding="utf-8") as f:
         json.dump(processed_data, f, indent=2)
-    print(f"Successfully generated: {output_path}")  # noqa: T201
+    print(f"Successfully generated: {output_path}")  # ruff: ignore[print]
 
-    # Create a symlink in the agent's directory for ADK optimization
-    adk_evalset_path = (
-        project_root / "src" / "agents" / "simple_agent" / "golden_evalset.evalset.json"
-    )
-    adk_evalset_path.parent.mkdir(parents=True, exist_ok=True)
-    if adk_evalset_path.exists() or adk_evalset_path.is_symlink():
-        adk_evalset_path.unlink()
-
-    adk_evalset_path.symlink_to(os.path.relpath(output_file, adk_evalset_path.parent))
-    print(f"Created symlink: {adk_evalset_path}")  # noqa: T201
+    link_evalset_into_agents(output_file, project_root)
 
 
 if __name__ == "__main__":
