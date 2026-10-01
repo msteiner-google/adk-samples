@@ -115,9 +115,39 @@ sampling examples according to the respective sampler configuration file (`sampl
 
 ### Metrics Used
 
+Deterministic metrics come first: they are free, stable between runs, and
+fail for a reason you can point at. Judge-based metrics cover what cannot be
+checked exactly.
+
+**Deterministic (no model call):**
+
+- **`extraction_f1`**: Per-field precision, recall and F1 over the extracted
+  key/value pairs, compared by value. Partial credit, so finding nine of ten
+  fields scores better than finding none. Presentation is ignored
+  (`net_profit_2024` matches `Net Profit 2024`, `353592` matches `353,592`,
+  list order does not matter); meaning is not.
+- **`schema_adherence`**: 1.0 when the response parses as `StructuredResponse`
+  with every field populated.
+
+**Judge-based:**
+
 - **Semantic Match (`final_response_match_v2`)**: Uses LLM-as-a-judge to verify that the extracted data is semantically correct.
 - **Trajectory Analysis (`tool_trajectory_avg_score`)**: Validates that the agent used the expected tools (in any order).
-- **Rubric-Based Quality (`rubric_based_final_response_quality_v1`)**: Enforces strict schema fidelity and penalizes missing fields or null values.
+- **Rubric-Based Quality (`rubric_based_final_response_quality_v1`)**: Judges
+  layout understanding, which is the part that cannot be checked exactly. The
+  former `schema_fidelity` rubric is gone, replaced by `schema_adherence`.
+
+### Trusting the Golden Data
+
+The golden datasets are the measuring instrument, so they are tested too
+(`tests/eval/test_golden_datasets.py`, `tests/evaluation/test_nl2sql_dataset.py`).
+Every NL2SQL expected result set is re-derived from the real database. The
+document cases get structural checks: referenced PDFs exist, ids are unique,
+expected answers satisfy the schema the agent is held to.
+
+This matters more than it sounds. Two expected values in `TC007_10K_LAYOUT`
+disagreed with the 10-K they cite, so an agent reading the table correctly was
+marked wrong on half the case.
 
 ## Self-Healing NL2SQL
 
