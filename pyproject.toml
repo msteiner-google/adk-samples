@@ -209,6 +209,13 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.per-file-ignores]
 "**/*.ipynb" = ["ANN", "D", "A004", "E402", "PTH", "E501", "T20"]
+# Command line entry points: printing to stdout is their output, and they
+# shell out to the adk CLI with argument lists they build themselves.
+"scripts/**" = [
+  "T20",  # print is the user interface here
+  "S404", # subprocess import
+  "S603", # subprocess call with a non-literal argv we construct ourselves
+]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]

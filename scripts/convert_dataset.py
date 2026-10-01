@@ -63,14 +63,14 @@ def link_evalset_into_agents(
         if link_path.exists() or link_path.is_symlink():
             link_path.unlink()
         link_path.symlink_to(os.path.relpath(output_file, agent_dir))
-        print(f"Created symlink: {link_path}")  # ruff: ignore[print]
+        print(f"Created symlink: {link_path}")
 
 
 def convert_to_adk_format(input_path: str, output_path: str) -> None:
     """Converts a template evalset to a full ADK evalset by embedding binaries."""
     input_file = pathlib.Path(input_path)
     if not input_file.exists():
-        print(f"Error: Input file not found: {input_path}")  # ruff: ignore[print]
+        print(f"Error: Input file not found: {input_path}")
         return
 
     with input_file.open("r", encoding="utf-8") as f:
@@ -83,7 +83,7 @@ def convert_to_adk_format(input_path: str, output_path: str) -> None:
     output_file.parent.mkdir(parents=True, exist_ok=True)
     with output_file.open("w", encoding="utf-8") as f:
         json.dump(processed_data, f, indent=2)
-    print(f"Successfully generated: {output_path}")  # ruff: ignore[print]
+    print(f"Successfully generated: {output_path}")
 
     link_evalset_into_agents(output_file, project_root)
 
