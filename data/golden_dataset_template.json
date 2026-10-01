@@ -24,27 +24,111 @@
               {
                 "text": {
                   "answer": [
-                    { "key": "10/02 POS PURCHASE", "value": -4.23, "context": "Bank Statement" },
-                    { "key": "10/03 PREAUTHORIZED CREDIT PAYROLL 0987654678990", "value": 763.01, "context": "Bank Statement" },
-                    { "key": "10/04 POS PURCHASE", "value": -11.68, "context": "Bank Statement" },
-                    { "key": "10/05 CHECK 1234", "value": -9.98, "context": "Bank Statement" },
-                    { "key": "10/05 POS PURCHASE", "value": -25.5, "context": "Bank Statement" },
-                    { "key": "10/08 POS PURCHASE", "value": -59.08, "context": "Bank Statement" },
-                    { "key": "10/12 CHECK 1236", "value": -69.0, "context": "Bank Statement" },
-                    { "key": "10/14 CHECK 1237", "value": -180.63, "context": "Bank Statement" },
-                    { "key": "10/14 POS PURCHASE", "value": -18.96, "context": "Bank Statement" },
-                    { "key": "10/16 PREAUTHORIZED CREDIT US TREASURY SSA", "value": 763.01, "context": "Bank Statement" },
-                    { "key": "10/22 ATM WITHDRAWAL", "value": -140.0, "context": "Bank Statement" },
-                    { "key": "10/28 CHECK 1238", "value": -91.06, "context": "Bank Statement" },
-                    { "key": "10/30 CHECK 1239", "value": -451.2, "context": "Bank Statement" },
-                    { "key": "10/30 CHECK 1246", "value": -37.07, "context": "Bank Statement" },
-                    { "key": "10/30 POS PURCHASE", "value": -18.67, "context": "Bank Statement" },
-                    { "key": "10/31 CHECK 1247", "value": -100.0, "context": "Bank Statement" },
-                    { "key": "10/31 CHECK 1248", "value": -78.24, "context": "Bank Statement" },
-                    { "key": "10/31 PREAUTHORIZED CREDIT DEPOSIT TERMINAL", "value": 350.0, "context": "Bank Statement" },
-                    { "key": "11/02 CHECK 1249", "value": -52.23, "context": "Bank Statement" },
-                    { "key": "11/09 INTEREST CREDIT", "value": 0.26, "context": "Bank Statement" },
-                    { "key": "11/09 SERVICE CHARGE", "value": -12.0, "context": "Bank Statement" }
+                    {
+                      "key": "10/02 POS PURCHASE",
+                      "value": -4.23,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/03 PREAUTHORIZED CREDIT PAYROLL 0987654678990",
+                      "value": 763.01,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/04 POS PURCHASE",
+                      "value": -11.68,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/05 CHECK 1234",
+                      "value": -9.98,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/05 POS PURCHASE",
+                      "value": -25.5,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/08 POS PURCHASE",
+                      "value": -59.08,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/12 CHECK 1236",
+                      "value": -69.0,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/14 CHECK 1237",
+                      "value": -180.63,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/14 POS PURCHASE",
+                      "value": -18.96,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/16 PREAUTHORIZED CREDIT US TREASURY SSA",
+                      "value": 763.01,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/22 ATM WITHDRAWAL",
+                      "value": -140.0,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/28 CHECK 1238",
+                      "value": -91.06,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/30 CHECK 1239",
+                      "value": -451.2,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/30 CHECK 1246",
+                      "value": -37.07,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/30 POS PURCHASE",
+                      "value": -18.67,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/31 CHECK 1247",
+                      "value": -100.0,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/31 CHECK 1248",
+                      "value": -78.24,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "10/31 PREAUTHORIZED CREDIT DEPOSIT TERMINAL",
+                      "value": 350.0,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "11/02 CHECK 1249",
+                      "value": -52.23,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "11/09 INTEREST CREDIT",
+                      "value": 0.26,
+                      "context": "Bank Statement"
+                    },
+                    {
+                      "key": "11/09 SERVICE CHARGE",
+                      "value": -12.0,
+                      "context": "Bank Statement"
+                    }
                   ]
                 }
               }
@@ -74,9 +158,21 @@
               {
                 "text": {
                   "answer": [
-                    { "key": "lender", "value": "UJJIVAN SMALL FINANCE BANK LTD.", "context": "Loan Agreement Header" },
-                    { "key": "borrower", "value": "Details stated in Schedule (Template is blank)", "context": "Loan Agreement Schedule" },
-                    { "key": "interest_rate", "value": "Fixed or Floating (linked to MCLR or External Benchmark Lending Rate plus Spread)", "context": "Interest Section" }
+                    {
+                      "key": "lender",
+                      "value": "UJJIVAN SMALL FINANCE BANK LTD.",
+                      "context": "Loan Agreement Header"
+                    },
+                    {
+                      "key": "borrower",
+                      "value": "Details stated in Schedule (Template is blank)",
+                      "context": "Loan Agreement Schedule"
+                    },
+                    {
+                      "key": "interest_rate",
+                      "value": "Fixed or Floating (linked to MCLR or External Benchmark Lending Rate plus Spread)",
+                      "context": "Interest Section"
+                    }
                   ]
                 }
               }
@@ -106,7 +202,11 @@
               {
                 "text": {
                   "answer": [
-                    { "key": "net_profit_2024", "value": "CHF 31,287 thousand", "context": "Financial Highlights" }
+                    {
+                      "key": "net_profit_2024",
+                      "value": "CHF 31,287 thousand",
+                      "context": "Financial Highlights"
+                    }
                   ]
                 }
               }
@@ -136,15 +236,19 @@
               {
                 "text": {
                   "answer": [
-                    { "key": "events_of_default", "value": [
-                      "Non-payment of dues (EMI, PEMII, etc.) on due date",
-                      "Performance of Covenants: failure to perform/observe any covenant/warranty",
-                      "Supply of Misleading Information",
-                      "Failure to furnish information/documents",
-                      "Cross Default with other agreements",
-                      "Insolvency/Liquidation proceedings",
-                      "Security Interest being in jeopardy"
-                    ], "context": "Events of Default section" }
+                    {
+                      "key": "events_of_default",
+                      "value": [
+                        "Non-payment of dues (EMI, PEMII, etc.) on due date",
+                        "Performance of Covenants: failure to perform/observe any covenant/warranty",
+                        "Supply of Misleading Information",
+                        "Failure to furnish information/documents",
+                        "Cross Default with other agreements",
+                        "Insolvency/Liquidation proceedings",
+                        "Security Interest being in jeopardy"
+                      ],
+                      "context": "Events of Default section"
+                    }
                   ]
                 }
               }
@@ -174,8 +278,16 @@
               {
                 "text": {
                   "answer": [
-                    { "key": "total_deposits_and_credits", "value": 1876.02, "context": "Account Summary" },
-                    { "key": "interest_paid", "value": 0.26, "context": "Account Summary" }
+                    {
+                      "key": "total_deposits_and_credits",
+                      "value": 1876.02,
+                      "context": "Account Summary"
+                    },
+                    {
+                      "key": "interest_paid",
+                      "value": 0.26,
+                      "context": "Account Summary"
+                    }
                   ]
                 }
               }
@@ -205,13 +317,17 @@
               {
                 "text": {
                   "answer": [
-                    { "key": "risks", "value": [
-                      "Credit risk",
-                      "Market risk (including interest rate and exchange rate risks)",
-                      "Liquidity risk",
-                      "Operational risk",
-                      "Legal, reputational, and compliance risks"
-                    ], "context": "Risk Management section" }
+                    {
+                      "key": "risks",
+                      "value": [
+                        "Credit risk",
+                        "Market risk (including interest rate and exchange rate risks)",
+                        "Liquidity risk",
+                        "Operational risk",
+                        "Legal, reputational, and compliance risks"
+                      ],
+                      "context": "Risk Management section"
+                    }
                   ]
                 }
               }
@@ -227,8 +343,12 @@
           "invocation_id": "inv_1",
           "user_content": {
             "parts": [
-              { "text": "Extract 'Total revenues' and 'Net income' for 2024 and 2023 from the Consolidated Statements of Income." },
-              { "file_path": "data/GOOG-10-K-2025.pdf" }
+              {
+                "text": "Extract 'Total revenues' and 'Net income' for 2024 and 2023 from the Consolidated Statements of Income."
+              },
+              {
+                "file_path": "data/GOOG-10-K-2025.pdf"
+              }
             ]
           },
           "final_response": {
@@ -237,10 +357,173 @@
               {
                 "text": {
                   "answer": [
-                    { "key": "Total revenues 2024", "value": 353592, "context": "Millions, except per share amounts" },
-                    { "key": "Total revenues 2023", "value": 307394, "context": "Millions, except per share amounts" },
-                    { "key": "Net income 2024", "value": 94126, "context": "Millions, except per share amounts" },
-                    { "key": "Net income 2023", "value": 73795, "context": "Millions, except per share amounts" }
+                    {
+                      "key": "Total revenues 2024",
+                      "value": 350018,
+                      "context": "Millions, except per share amounts"
+                    },
+                    {
+                      "key": "Total revenues 2023",
+                      "value": 307394,
+                      "context": "Millions, except per share amounts"
+                    },
+                    {
+                      "key": "Net income 2024",
+                      "value": 100118,
+                      "context": "Millions, except per share amounts"
+                    },
+                    {
+                      "key": "Net income 2023",
+                      "value": 73795,
+                      "context": "Millions, except per share amounts"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "TC008_10K_NESTED_TABLE",
+      "conversation": [
+        {
+          "invocation_id": "inv_1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "From the 'revenues by type' table, extract the 2025 revenue for Google Search & other, YouTube ads and Google Network, and the Google advertising subtotal for 2025."
+              },
+              {
+                "file_path": "data/GOOG-10-K-2025.pdf"
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": {
+                  "answer": [
+                    {
+                      "key": "Google Search & other 2025",
+                      "value": 224532,
+                      "context": "Revenues by type, in millions"
+                    },
+                    {
+                      "key": "YouTube ads 2025",
+                      "value": 40367,
+                      "context": "Revenues by type, in millions"
+                    },
+                    {
+                      "key": "Google Network 2025",
+                      "value": 29792,
+                      "context": "Revenues by type, in millions"
+                    },
+                    {
+                      "key": "Google advertising 2025",
+                      "value": 294691,
+                      "context": "Revenues by type, in millions"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "TC009_10K_BALANCE_SHEET",
+      "conversation": [
+        {
+          "invocation_id": "inv_1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "From the Consolidated Balance Sheets, extract Total assets and Total liabilities as of December 31 for both 2024 and 2025."
+              },
+              {
+                "file_path": "data/GOOG-10-K-2025.pdf"
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": {
+                  "answer": [
+                    {
+                      "key": "Total assets 2024",
+                      "value": 450256,
+                      "context": "Consolidated Balance Sheets, in millions"
+                    },
+                    {
+                      "key": "Total assets 2025",
+                      "value": 595281,
+                      "context": "Consolidated Balance Sheets, in millions"
+                    },
+                    {
+                      "key": "Total liabilities 2024",
+                      "value": 125172,
+                      "context": "Consolidated Balance Sheets, in millions"
+                    },
+                    {
+                      "key": "Total liabilities 2025",
+                      "value": 180016,
+                      "context": "Consolidated Balance Sheets, in millions"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "TC010_10K_EPS_PRECISION",
+      "conversation": [
+        {
+          "invocation_id": "inv_1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "From the Consolidated Statements of Income, extract basic and diluted net income per share for 2025 and 2024."
+              },
+              {
+                "file_path": "data/GOOG-10-K-2025.pdf"
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": {
+                  "answer": [
+                    {
+                      "key": "Basic net income per share 2025",
+                      "value": 10.91,
+                      "context": "Consolidated Statements of Income, per share amounts"
+                    },
+                    {
+                      "key": "Diluted net income per share 2025",
+                      "value": 10.81,
+                      "context": "Consolidated Statements of Income, per share amounts"
+                    },
+                    {
+                      "key": "Basic net income per share 2024",
+                      "value": 8.13,
+                      "context": "Consolidated Statements of Income, per share amounts"
+                    },
+                    {
+                      "key": "Diluted net income per share 2024",
+                      "value": 8.04,
+                      "context": "Consolidated Statements of Income, per share amounts"
+                    }
                   ]
                 }
               }

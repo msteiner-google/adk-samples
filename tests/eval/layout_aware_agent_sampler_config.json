@@ -16,12 +16,6 @@
         "threshold": 0.8,
         "rubrics": [
           {
-            "rubric_id": "schema_fidelity",
-            "rubric_content": {
-              "text_property": "The response must follow the requested JSON schema strictly, containing all required fields with accurate data. Penalize if any fields are missing or if values are null/empty where they shouldn't be."
-            }
-          },
-          {
             "rubric_id": "layout_fidelity",
             "rubric_content": {
               "text_property": "The agent must demonstrate accurate understanding of the document layout, especially for complex or nested tables. Penalize if the agent misinterprets the relationship between headers and data, or if it misses structural components identified in the layout analysis phase."
@@ -39,6 +33,22 @@
             }
           }
         ]
+      },
+      "extraction_f1": 0.8,
+      "schema_adherence": 1.0
+    },
+    "custom_metrics": {
+      "extraction_f1": {
+        "code_config": {
+          "name": "src.evaluation.extraction_metrics.extraction_f1"
+        },
+        "description": "Per-field F1 over extracted key/value pairs, compared by value. Deterministic and free: no judge model. Partial credit, so finding nine of ten fields scores better than finding none."
+      },
+      "schema_adherence": {
+        "code_config": {
+          "name": "src.evaluation.extraction_metrics.schema_adherence"
+        },
+        "description": "1.0 when the response parses as StructuredResponse with every field populated. Replaces the LLM schema_fidelity rubric with an exact check."
       }
     }
   },
