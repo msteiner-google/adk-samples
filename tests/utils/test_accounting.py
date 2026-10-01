@@ -2,7 +2,7 @@
 
 import json
 import pathlib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import pytest
 from google.adk.models.llm_response import LlmResponse
@@ -12,11 +12,19 @@ from src.utils.accounting import TokenAccountantPlugin
 
 
 @dataclass
+class FakeSession:
+    """Stands in for ADK's Session, which carries the App name."""
+
+    app_name: str = "simple_agent"
+
+
+@dataclass
 class FakeContext:
-    """Stands in for ADK's CallbackContext; the plugin reads two fields."""
+    """Stands in for ADK's CallbackContext; the plugin reads three fields."""
 
     invocation_id: str = "inv-1"
     agent_name: str = "simple_bank_agent"
+    session: FakeSession | None = field(default_factory=FakeSession)
 
 
 def make_response(
@@ -165,3 +173,41 @@ async def test_totals_sum_every_agent(plugin: TokenAccountantPlugin):
     assert totals.prompt == 150
     assert totals.thoughts == 15
     assert totals.calls == 2
+
+
+async def test_app_name_comes_from_the_session(plugin: TokenAccountantPlugin):
+    """Reports total cost per app, so each record must name its app."""
+    await plugin.after_model_callback(
+        callback_context=FakeContext(
+            session=FakeSession(app_name="layout_aware_agent")
+        ),
+        llm_response=make_response(prompt=100),
+    )
+    assert plugin.snapshot()[0].app_name == "layout_aware_agent"
+
+
+async def test_app_name_falls_back_to_the_constructor(tmp_path: pathlib.Path):
+    """A context without a session still produces an attributable record."""
+    plugin = TokenAccountantPlugin(
+        output_path=tmp_path / "usage.jsonl",
+        app_name="fallback_app",
+        write_on_run_end=False,
+    )
+    await plugin.after_model_callback(
+        callback_context=FakeContext(session=None),
+        llm_response=make_response(prompt=100),
+    )
+    assert plugin.snapshot()[0].app_name == "fallback_app"
+
+
+async def test_two_apps_are_not_merged(plugin: TokenAccountantPlugin):
+    """Same agent name under two apps must stay two records."""
+    for app in ("simple_agent", "layout_aware_agent"):
+        await plugin.after_model_callback(
+            callback_context=FakeContext(session=FakeSession(app_name=app)),
+            llm_response=make_response(prompt=100),
+        )
+    assert {r.app_name for r in plugin.snapshot()} == {
+        "simple_agent",
+        "layout_aware_agent",
+    }

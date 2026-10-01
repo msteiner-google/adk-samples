@@ -29,11 +29,16 @@ if TYPE_CHECKING:
 DEFAULT_USAGE_LOG = pathlib.Path("reports/token_usage.jsonl")
 
 _UNKNOWN_MODEL = "unknown"
+_UNKNOWN_APP = "unknown"
 
 
 class UsageRecord(BaseModel):
-    """Aggregated usage for one (agent, model) pair within one invocation."""
+    """Aggregated usage for one (app, agent, model) triple in one invocation."""
 
+    app_name: str = Field(
+        default=_UNKNOWN_APP,
+        description="Owning App, so reports can total cost per agent app",
+    )
     invocation_id: str
     agent_name: str
     model: str
@@ -63,6 +68,7 @@ class TokenAccountantPlugin(BasePlugin):
         self,
         name: str = "token_accountant",
         output_path: pathlib.Path | None = None,
+        app_name: str | None = None,
         *,
         write_on_run_end: bool = True,
     ) -> None:
@@ -72,15 +78,23 @@ class TokenAccountantPlugin(BasePlugin):
           name: Plugin name, as required by ADK's plugin manager.
           output_path: JSONL file to append to. Defaults to
             `reports/token_usage.jsonl`.
+          app_name: Fallback App name for records, used when the session does
+            not carry one. Normally left unset.
           write_on_run_end: Whether to flush automatically when a run finishes.
             Set False to collect in-process and flush by hand, which is what
             the benchmark script does.
         """
         super().__init__(name=name)
         self._output_path = output_path or DEFAULT_USAGE_LOG
+        self._app_name = app_name
         self._write_on_run_end = write_on_run_end
-        self._records: dict[tuple[str, str, str], UsageRecord] = {}
+        self._records: dict[tuple[str, str, str, str], UsageRecord] = {}
         self._lock = threading.Lock()
+
+    def _resolve_app_name(self, callback_context: CallbackContext) -> str:
+        """Finds the App name for a record, preferring the live session."""
+        session = getattr(callback_context, "session", None)
+        return getattr(session, "app_name", None) or self._app_name or _UNKNOWN_APP
 
     async def after_model_callback(
         self, *, callback_context: CallbackContext, llm_response: LlmResponse
@@ -96,6 +110,7 @@ class TokenAccountantPlugin(BasePlugin):
             return
 
         key = (
+            self._resolve_app_name(callback_context),
             callback_context.invocation_id,
             callback_context.agent_name,
             llm_response.model_version or _UNKNOWN_MODEL,
@@ -104,9 +119,10 @@ class TokenAccountantPlugin(BasePlugin):
             existing = self._records.get(key)
             merged = existing.usage + usage if existing else usage
             self._records[key] = UsageRecord(
-                invocation_id=key[0],
-                agent_name=key[1],
-                model=key[2],
+                app_name=key[0],
+                invocation_id=key[1],
+                agent_name=key[2],
+                model=key[3],
                 usage=merged,
             )
 
