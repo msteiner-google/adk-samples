@@ -9,6 +9,11 @@ implements it in **[docs/topic-coverage.md](docs/topic-coverage.md)**, with an
 honest account of what has been verified by a live run and what has only been
 unit tested. Start there.
 
+**[docs/topic-examples.md](docs/topic-examples.md)** is the guided tour: for
+each topic, what the worked example is, the command to run it, the technique
+it demonstrates, and where the limits are. Read that if you are here to learn
+from the examples rather than to navigate the code.
+
 For how the project got here, [docs/delivery-log.md](docs/delivery-log.md)
 records what each merged PR changed against the baseline it started from, the
 reasoning behind the choices, and the bugs found along the way.
