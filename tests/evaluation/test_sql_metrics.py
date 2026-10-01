@@ -55,9 +55,7 @@ def expected(rows: list) -> Invocation:
         intermediate_data=IntermediateData(
             tool_uses=[],
             tool_responses=[
-                types.FunctionResponse(
-                    name=SQL_TOOL, response={"expected_rows": rows}
-                )
+                types.FunctionResponse(name=SQL_TOOL, response={"expected_rows": rows})
             ],
         ),
     )
