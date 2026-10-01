@@ -23,6 +23,15 @@ AGENT ?= simple_agent
 bench-thinking: convert
 	uv run python scripts/thinking_benchmark.py --agent $(AGENT) $(if $(BUDGETS),--budgets $(BUDGETS),)
 
+# Run the full evaluation matrix, then report on it.
+# Override: make batch AGENTS=simple_agent BUDGETS=0,2048 JOBS=2
+batch: convert
+	uv run python scripts/run_batch_eval.py \
+		$(if $(AGENTS),--agents $(AGENTS),) \
+		$(if $(BUDGETS),--budgets $(BUDGETS),) \
+		$(if $(JOBS),--jobs $(JOBS),)
+	$(MAKE) report
+
 # Build a markdown report from results already on disk. Calls no model.
 report:
 	uv run python scripts/generate_report.py
