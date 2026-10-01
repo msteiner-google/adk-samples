@@ -7,6 +7,7 @@ from src.utils.accounting import TokenAccountantPlugin
 from src.utils.data_model import StructuredResponse
 from src.utils.model import get_geofenced_gemini_model
 from src.utils.patch import apply_adk_patch
+from src.utils.thinking import planner_from_env
 
 # Apply monkeypatch for ADK LocalEvalSampler
 apply_adk_patch()
@@ -23,6 +24,8 @@ root_agent = LlmAgent(
     model=get_geofenced_gemini_model(),
     output_schema=StructuredResponse,
     output_key="structured_extraction",
+    # None unless ADK_THINKING_BUDGET is set; see src/utils/thinking.py.
+    planner=planner_from_env(),
 )
 
 # The App name must match the directory name: `adk optimize` derives app_name

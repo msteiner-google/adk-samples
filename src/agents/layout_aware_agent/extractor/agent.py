@@ -4,6 +4,7 @@ from google.adk.agents.llm_agent import LlmAgent
 
 from src.utils.data_model import StructuredResponse
 from src.utils.model import get_geofenced_gemini_model
+from src.utils.thinking import planner_from_env
 
 complex_extractor_agent = LlmAgent(
     name="complex_extractor",
@@ -16,4 +17,5 @@ complex_extractor_agent = LlmAgent(
     model=get_geofenced_gemini_model(),
     output_schema=StructuredResponse,
     output_key="structured_extraction",
+    planner=planner_from_env(),
 )
