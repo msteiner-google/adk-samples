@@ -226,6 +226,11 @@ exclude = []
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
+[tool.ruff.lint.flake8-type-checking]
+# Pydantic resolves field annotations at runtime, so moving these imports into
+# a TYPE_CHECKING block raises "is not fully defined" when the model is built.
+runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+
 
 [tool.basedpyright]
 include = ["src"]
