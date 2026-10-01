@@ -23,6 +23,7 @@ source = { editable = "." }
 dependencies = [
     { name = "google-adk", extra = ["eval"] },
     { name = "loguru" },
+    { name = "sqlglot" },
 ]
 
 [package.dev-dependencies]
@@ -40,6 +41,7 @@ dev = [
 requires-dist = [
     { name = "google-adk", extras = ["eval"], specifier = ">=2.9.2" },
     { name = "loguru", specifier = ">=0.7.3" },
+    { name = "sqlglot", specifier = ">=30.19.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -2241,6 +2243,15 @@ source = { registry = "http://airlock-proxy.uplink.goog:999/python/artifact-foun
 sdist = { url = "http://airlock-proxy.uplink.goog:999/python/artifact-foundry-prod/python-3p-limited-internal-use/sniffio/sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc" }
 wheels = [
     { url = "http://airlock-proxy.uplink.goog:999/python/artifact-foundry-prod/python-3p-limited-internal-use/sniffio/sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2" },
+]
+
+[[package]]
+name = "sqlglot"
+version = "30.19.0"
+source = { registry = "http://airlock-proxy.uplink.goog:999/python/artifact-foundry-prod/python-3p-limited-internal-use/simple/" }
+sdist = { url = "http://airlock-proxy.uplink.goog:999/python/artifact-foundry-prod/python-3p-limited-internal-use/sqlglot/sqlglot-30.19.0.tar.gz", hash = "sha256:6fcfbe93c5ee76e07faadf0930dd119eebb545c4f317f8e4f205f177305d8b08" }
+wheels = [
+    { url = "http://airlock-proxy.uplink.goog:999/python/artifact-foundry-prod/python-3p-limited-internal-use/sqlglot/sqlglot-30.19.0-py3-none-any.whl", hash = "sha256:b4500fcced395359feea582f09d2d4433bf1f36362a3a9d0d6d5ebbc1f84242e" },
 ]
 
 [[package]]
