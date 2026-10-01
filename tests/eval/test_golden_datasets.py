@@ -125,9 +125,7 @@ def test_generated_evalset_round_trips(tmp_path: pathlib.Path):
     convert_to_adk_format(str(DOCUMENT_DATASET), str(output), agent_names=())
 
     produced = json.loads(output.read_text(encoding="utf-8"))
-    for source, converted in zip(
-        document_cases(), produced["eval_cases"], strict=True
-    ):
+    for source, converted in zip(document_cases(), produced["eval_cases"], strict=True):
         expected = source["conversation"][0]["final_response"]["parts"][0]["text"]
         text = converted["conversation"][0]["final_response"]["parts"][0]["text"]
         assert json.loads(text) == expected, source["eval_id"]
