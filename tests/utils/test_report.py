@@ -27,9 +27,7 @@ def make_run(
         cases_passed=sum(cases.values()),
         case_status=cases,
         metrics={
-            name: MetricSummary(
-                metric_name=name, mean_score=score, passed=1, total=1
-            )
+            name: MetricSummary(metric_name=name, mean_score=score, passed=1, total=1)
             for name, score in (metrics or {}).items()
         },
     )
@@ -163,9 +161,7 @@ def test_multiple_apps_each_get_a_section():
     """Batch runs cover several agents and the report covers all of them."""
     comparisons = [
         compare_runs(current=make_run({"TC001": True}, app_name="simple_agent")),
-        compare_runs(
-            current=make_run({"TC001": False}, app_name="layout_aware_agent")
-        ),
+        compare_runs(current=make_run({"TC001": False}, app_name="layout_aware_agent")),
     ]
 
     markdown = render_markdown(comparisons, generated_at="2026-10-01T00:00:00Z")
