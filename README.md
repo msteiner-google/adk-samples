@@ -9,6 +9,8 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 ├── Makefile                # Entry point for common commands (eval, optimize, batch, report, check)
 ├── data/
 │   ├── golden_dataset_template.json  # Source dataset in ADK format (using local file paths)
+│   ├── nl2sql_golden_dataset.json    # NL questions with expected result sets
+│   ├── nl2sql_schema.sql   # Schema and seed rows for the NL2SQL database
 │   └── model_pricing.json  # Checked-in snapshot of Vertex AI token rates
 ├── scripts/
 │   ├── convert_dataset.py  # Utility to embed local files as base64 and stringify JSON
@@ -22,9 +24,15 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 │   │   │   ├── agent.py
 │   │   │   ├── analyst/        # Specialized sub-agent for layout analysis
 │   │   │   └── extractor/      # Specialized sub-agent for data extraction
+│   │   ├── nl2sql_agent/       # Self-healing SQL agent over a local SQLite DB
+│   │   │   ├── __init__.py
+│   │   │   ├── agent.py
+│   │   │   └── tools.py        # describe_schema and run_sql_query
 │   │   └── simple_agent/       # Baseline agent for standard documents
 │   │       ├── __init__.py
 │   │       └── agent.py
+│   ├── evaluation/
+│   │   └── sql_metrics.py  # Custom metrics: result match and self-heal recovery
 │   └── utils/
 │       ├── accounting.py   # TokenAccountantPlugin: per-agent token and cost capture
 │       ├── data_model.py   # Pydantic schemas: StructuredResponse and LayoutMap
@@ -32,6 +40,8 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 │       ├── model.py        # Model utilities and geofenced Gemini factory
 │       ├── patch.py        # ADK optimization stability patches
 │       ├── pricing.py      # Token counts to dollars
+│       ├── sql_dialect.py  # Cross-dialect SQL transpilation via sqlglot
+│       ├── sql_runtime.py  # In-memory SQLite and the read-only query tool
 │       ├── report.py       # Run comparison and markdown rendering
 │       ├── thinking.py     # Thinking-budget control via ADK_THINKING_BUDGET
 │       └── usage.py        # Token usage accounting primitives
@@ -108,6 +118,41 @@ sampling examples according to the respective sampler configuration file (`sampl
 - **Semantic Match (`final_response_match_v2`)**: Uses LLM-as-a-judge to verify that the extracted data is semantically correct.
 - **Trajectory Analysis (`tool_trajectory_avg_score`)**: Validates that the agent used the expected tools (in any order).
 - **Rubric-Based Quality (`rubric_based_final_response_quality_v1`)**: Enforces strict schema fidelity and penalizes missing fields or null values.
+
+## Self-Healing NL2SQL
+
+`nl2sql_agent` answers natural-language questions by writing SQL against a
+local SQLite database seeded from `data/nl2sql_schema.sql`. SQLite keeps the
+topic reproducible: no project, no credentials, no shared state between runs.
+
+```bash
+make eval-nl2sql
+```
+
+When a query fails, the tool raises with the database's own error text, the
+failed SQL and the live schema attached. ADK's `ReflectAndRetryToolPlugin`
+feeds that back to the model, which rewrites the query and tries again, up to
+three times. That is the loop Topic 4 asks for.
+
+Model-written SQL is transpiled with `sqlglot` before it runs, so the
+BigQuery-flavoured SQL Gemini produces by default (backticks, `SAFE_CAST`,
+`project.dataset.table`) works without special prompting.
+
+Two custom metrics score it, both registered in
+`tests/eval/nl2sql_eval_config.json`:
+
+- **`sql_result_match`** re-runs the agent's final query and compares result
+  sets. Query text is not compared, because many spellings are correct and
+  only the rows settle it.
+- **`sql_self_heal_recovery`** scores only the cases whose first query failed.
+  Cases that never failed are skipped, so easy questions cannot inflate it.
+
+Three of the ten golden cases are built to fail on the first attempt, on a
+wrong column name, an unsupported function and a wrong table name, so the
+healing loop is exercised rather than assumed.
+
+See [docs/patterns/nl2sql.md](docs/patterns/nl2sql.md) for the patterns, the
+trade-offs behind them, and the known limits.
 
 ## Batch Evaluation and Reports
 
