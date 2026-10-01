@@ -58,3 +58,8 @@ Thumbs.db
 tests/eval/evalsets/golden_evalset.json
 .worktrees/
 src/agents/*/*.evalset.json
+
+# Raw eval/optimize console dumps (superseded by generated reports/)
+eval_results.txt
+optimize_results.txt
+reports/
