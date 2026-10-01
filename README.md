@@ -6,11 +6,15 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 
 ```
 .
-├── Makefile                # Entry point for common commands (eval, optimize, convert, check)
+├── Makefile                # Entry point for common commands (eval, optimize, batch, report, check)
 ├── data/
-│   └── golden_dataset_template.json  # Source dataset in ADK format (using local file paths)
+│   ├── golden_dataset_template.json  # Source dataset in ADK format (using local file paths)
+│   └── model_pricing.json  # Checked-in snapshot of Vertex AI token rates
 ├── scripts/
-│   └── convert_dataset.py  # Utility to embed local files as base64 and stringify JSON
+│   ├── convert_dataset.py  # Utility to embed local files as base64 and stringify JSON
+│   ├── run_batch_eval.py   # Runs the agent x thinking-budget evaluation matrix
+│   ├── generate_report.py  # Builds a markdown report with regression detection
+│   └── thinking_benchmark.py # Accuracy vs. latency vs. cost across thinking budgets
 ├── src/
 │   ├── agents/
 │   │   ├── layout_aware_agent/ # Agent optimized for complex document layouts
@@ -22,9 +26,15 @@ This project implements an AI agent using the Google ADK (Agent Development Kit)
 │   │       ├── __init__.py
 │   │       └── agent.py
 │   └── utils/
+│       ├── accounting.py   # TokenAccountantPlugin: per-agent token and cost capture
 │       ├── data_model.py   # Pydantic schemas: StructuredResponse and LayoutMap
+│       ├── eval_history.py # Reads the result files adk eval leaves on disk
 │       ├── model.py        # Model utilities and geofenced Gemini factory
-│       └── patch.py        # ADK optimization stability patches
+│       ├── patch.py        # ADK optimization stability patches
+│       ├── pricing.py      # Token counts to dollars
+│       ├── report.py       # Run comparison and markdown rendering
+│       ├── thinking.py     # Thinking-budget control via ADK_THINKING_BUDGET
+│       └── usage.py        # Token usage accounting primitives
 ├── tests/
 │   ├── eval/
 │   │   ├── eval_config.json      # Evaluation criteria and thresholds
@@ -98,6 +108,64 @@ sampling examples according to the respective sampler configuration file (`sampl
 - **Semantic Match (`final_response_match_v2`)**: Uses LLM-as-a-judge to verify that the extracted data is semantically correct.
 - **Trajectory Analysis (`tool_trajectory_avg_score`)**: Validates that the agent used the expected tools (in any order).
 - **Rubric-Based Quality (`rubric_based_final_response_quality_v1`)**: Enforces strict schema fidelity and penalizes missing fields or null values.
+
+## Batch Evaluation and Reports
+
+`make batch` runs every agent, then writes a markdown report. The matrix can be
+widened to cross agents with thinking budgets:
+
+```bash
+make batch                                        # every agent, default settings
+make batch AGENTS=simple_agent BUDGETS=0,2048     # one agent, two budgets
+make batch JOBS=2                                 # two evals in parallel
+```
+
+Concurrency defaults to 1 because each job calls a paid API against a shared
+project quota.
+
+`make report` builds the report on its own from results already on disk. It
+calls no model, so it is free to re-run:
+
+```bash
+make report
+uv run python scripts/generate_report.py --fail-on-regression   # CI gate
+```
+
+The report leads with **regressions**: cases that passed in the previous run and
+fail in the current one. It also carries per-metric score deltas, per-case
+results, and token and cost totals per agent. Reports land in `reports/`, which
+is gitignored.
+
+## Cost and Thinking Tokens
+
+Every agent runs with a `TokenAccountantPlugin` that records token usage per
+agent and per model to `reports/token_usage.jsonl`, costed against the rate
+table in `data/model_pricing.json`.
+
+Thinking tokens are reported as their own line rather than folded into output,
+because the question Topic 6 asks is what reasoning costs. To measure whether it
+pays for itself:
+
+```bash
+make bench-thinking BUDGETS=0,2048,-1
+```
+
+That runs the evalset once per budget (`0` disables thinking, `-1` lets the
+model decide) and prints accuracy, latency, tokens and dollars side by side.
+
+> **Note on rates:** `data/model_pricing.json` is a checked-in snapshot of
+> published Vertex AI pricing, not a live lookup, so that eval runs stay
+> reproducible and offline. It drifts. Re-check the source in its `_meta` block
+> before quoting a figure externally.
+
+## Continuous Integration
+
+- `.github/workflows/ci.yml` runs on every pull request: lint, tests, evalset
+  conversion and a dry run of the batch and report scripts. No model is called
+  and no credentials are needed.
+- `.github/workflows/nightly-eval.yml` runs the matrix on a schedule, uploads
+  the report as an artifact, and fails on a regression. It skips itself when
+  Google Cloud credentials are not configured.
 
 ## Reproducibility vs. Production
 
