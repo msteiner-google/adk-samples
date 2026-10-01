@@ -48,12 +48,10 @@ def test_summary_counts_cases_and_metrics(tmp_path: pathlib.Path):
     """Case-level and metric-level pass rates are both reported."""
     path = write_history(
         tmp_path,
-        make_result(
-            [
-                make_case("TC001", PASSED, [("final_response_match_v2", 0.9, PASSED)]),
-                make_case("TC002", FAILED, [("final_response_match_v2", 0.5, FAILED)]),
-            ]
-        ),
+        make_result([
+            make_case("TC001", PASSED, [("final_response_match_v2", 0.9, PASSED)]),
+            make_case("TC002", FAILED, [("final_response_match_v2", 0.5, FAILED)]),
+        ]),
         "run.json",
     )
 
@@ -71,12 +69,10 @@ def test_per_case_status_is_retained(tmp_path: pathlib.Path):
     """A report needs to name which case regressed, not just how many."""
     path = write_history(
         tmp_path,
-        make_result(
-            [
-                make_case("TC001", PASSED, []),
-                make_case("TC007_10K_LAYOUT", FAILED, []),
-            ]
-        ),
+        make_result([
+            make_case("TC001", PASSED, []),
+            make_case("TC007_10K_LAYOUT", FAILED, []),
+        ]),
         "run.json",
     )
 
@@ -89,21 +85,19 @@ def test_metric_without_a_score_still_counts_its_outcome(tmp_path: pathlib.Path)
     """A metric that errored has no score but did still fail the case."""
     path = write_history(
         tmp_path,
-        make_result(
-            [
-                {
-                    "eval_id": "TC001",
-                    "final_eval_status": FAILED,
-                    "overall_eval_metric_results": [
-                        {
-                            "metric_name": "rubric_based_final_response_quality_v1",
-                            "score": None,
-                            "eval_status": FAILED,
-                        }
-                    ],
-                }
-            ]
-        ),
+        make_result([
+            {
+                "eval_id": "TC001",
+                "final_eval_status": FAILED,
+                "overall_eval_metric_results": [
+                    {
+                        "metric_name": "rubric_based_final_response_quality_v1",
+                        "score": None,
+                        "eval_status": FAILED,
+                    }
+                ],
+            }
+        ]),
         "run.json",
     )
 

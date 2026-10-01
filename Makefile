@@ -1,4 +1,4 @@
-.PHONY: eval optimize convert check test eval-simple eval-layout optimize-simple optimize-layout bench-thinking
+.PHONY: eval optimize convert check test report batch eval-simple eval-layout optimize-simple optimize-layout bench-thinking
 
 eval: eval-simple eval-layout
 
@@ -22,6 +22,10 @@ optimize-layout: convert
 AGENT ?= simple_agent
 bench-thinking: convert
 	uv run python scripts/thinking_benchmark.py --agent $(AGENT) $(if $(BUDGETS),--budgets $(BUDGETS),)
+
+# Build a markdown report from results already on disk. Calls no model.
+report:
+	uv run python scripts/generate_report.py
 
 convert:
 	uv run python scripts/convert_dataset.py
