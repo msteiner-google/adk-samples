@@ -4,6 +4,7 @@ from google.adk.agents.llm_agent import LlmAgent
 
 from src.utils.data_model import LayoutMap
 from src.utils.model import get_geofenced_gemini_model
+from src.utils.thinking import planner_from_env
 
 layout_analyst_agent = LlmAgent(
     name="layout_analyst",
@@ -15,4 +16,5 @@ layout_analyst_agent = LlmAgent(
     model=get_geofenced_gemini_model(),
     output_schema=LayoutMap,
     output_key="layout_map",
+    planner=planner_from_env(),
 )
